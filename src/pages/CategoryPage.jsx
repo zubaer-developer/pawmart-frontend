@@ -1,23 +1,29 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
-function PetsAndSupplies() {
+function CategoryPage() {
+  const { categoryName } = useParams();
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchListings();
-  }, []);
+    fetchListingsByCategory();
+  }, [categoryName]);
 
-  const fetchListings = async () => {
+  const fetchListingsByCategory = async () => {
     try {
       setLoading(true);
       const response = await fetch("http://localhost:5000/listings");
       const data = await response.json();
 
       if (data.success) {
-        setListings(data.data);
+        // Filter by category
+        const filtered = data.data.filter(
+          (listing) =>
+            listing.category.toLowerCase() === categoryName.toLowerCase()
+        );
+        setListings(filtered);
       } else {
         setError("Failed to fetch listings");
       }
@@ -30,7 +36,7 @@ function PetsAndSupplies() {
   };
 
   if (loading) {
-    return <p>Loading listings...</p>;
+    return <p>Loading...</p>;
   }
 
   if (error) {
@@ -39,11 +45,13 @@ function PetsAndSupplies() {
 
   return (
     <div>
-      <h1>Pets and Supplies</h1>
-      <p>Total listings: {listings.length}</p>
+      <Link to="/pets-and-supplies">← Back to All Listings</Link>
+
+      <h1>Category: {categoryName}</h1>
+      <p>Total: {listings.length} listings</p>
 
       {listings.length === 0 ? (
-        <p>No listings available</p>
+        <p>No listings found in this category</p>
       ) : (
         <div>
           {listings.map((listing) => (
@@ -56,7 +64,6 @@ function PetsAndSupplies() {
               }}
             >
               <h3>{listing.name}</h3>
-              <p>Category: {listing.category}</p>
               <p>
                 Price:{" "}
                 {listing.price === 0 ? "Free (Adoption)" : `$${listing.price}`}
@@ -71,4 +78,4 @@ function PetsAndSupplies() {
   );
 }
 
-export default PetsAndSupplies;
+export default CategoryPage;

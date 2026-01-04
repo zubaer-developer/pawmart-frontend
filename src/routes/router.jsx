@@ -8,6 +8,7 @@ import ListingDetails from "../pages/ListingDetails";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
+import CategoryPage from "../pages/CategoryPage";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/category/:categoryName",
+        element: <CategoryPage />,
       },
     ],
   },
