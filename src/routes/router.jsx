@@ -18,6 +18,7 @@ import NotFound from "../pages/NotFound";
 import DashboardOverview from "../pages/dashboard/DashboardOverview";
 import AddListing from "../pages/dashboard/AddListing";
 import MyListings from "../pages/dashboard/MyListings";
+import UpdateListing from "../pages/dashboard/UpdateListing";
 import MyOrders from "../pages/dashboard/MyOrders";
 import Profile from "../pages/dashboard/Profile";
 
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: "my-listings",
         element: <MyListings />,
+      },
+      {
+        path: "update-listing/:id",
+        element: <UpdateListing />,
       },
       {
         path: "my-orders",
