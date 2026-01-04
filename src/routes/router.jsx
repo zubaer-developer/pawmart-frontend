@@ -1,13 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "../layouts/Mainlayout";
+import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import PetsAndSupplies from "../pages/PetsAndSupplies";
+import ListingDetails from "../pages/ListingDetails";
+import About from "../pages/About";
+import Contact from "../pages/Contact";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout></MainLayout>,
+    element: <MainLayout />,
     children: [
       {
         path: "/",
@@ -21,7 +26,27 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/pets-and-supplies",
+        element: <PetsAndSupplies />,
+      },
+      {
+        path: "/listing/:id",
+        element: <ListingDetails />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 
