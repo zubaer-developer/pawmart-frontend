@@ -1,7 +1,105 @@
+import { useState, useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
+
 function MyOrders() {
+  const { user } = useAuth();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (user?.email) {
+      fetchMyOrders();
+    }
+  }, [user]);
+
+  const fetchMyOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:5000/orders/user/${user.email}`
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        setOrders(data.data);
+      } else {
+        setError("Failed to fetch orders");
+      }
+    } catch (err) {
+      setError("Error connecting to server");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "orange";
+      case "completed":
+        return "green";
+      case "cancelled":
+        return "red";
+      default:
+        return "gray";
+    }
+  };
+
+  if (loading) {
+    return <p>Loading your orders...</p>;
+  }
+
+  if (error) {
+    return <p style={{ color: "red" }}>{error}</p>;
+  }
+
   return (
     <div>
       <h1>My Orders</h1>
+      <p>Total: {orders.length} orders</p>
+
+      {orders.length === 0 ? (
+        <p>You have no orders yet.</p>
+      ) : (
+        <table
+          border="1"
+          cellPadding="10"
+          style={{ marginTop: "20px", width: "100%" }}
+        >
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order._id}>
+                <td>{order.productName}</td>
+                <td>{order.category}</td>
+                <td>{order.price === 0 ? "Free" : `৳${order.price}`}</td>
+                <td>{order.quantity}</td>
+                <td>{order.address}</td>
+                <td>{order.phone}</td>
+                <td>{order.date}</td>
+                <td>
+                  <span style={{ color: getStatusColor(order.status) }}>
+                    {order.status?.toUpperCase() || "PENDING"}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

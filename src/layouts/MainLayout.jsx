@@ -24,6 +24,7 @@ function MainLayout() {
         <Link to="/about">About</Link> |<Link to="/contact">Contact</Link> |
         {user ? (
           <>
+            <Link to="/dashboard">Dashboard</Link> |
             <span>Hello, {user.displayName || user.email}</span> |
             <button onClick={handleLogout}>Logout</button>
           </>
