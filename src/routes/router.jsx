@@ -1,14 +1,25 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
+import PrivateRoute from "./PrivateRoute";
+
+// Public Pages
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import PetsAndSupplies from "../pages/PetsAndSupplies";
 import ListingDetails from "../pages/ListingDetails";
+import CategoryPage from "../pages/CategoryPage";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
-import CategoryPage from "../pages/CategoryPage";
+
+// Dashboard Pages
+import DashboardOverview from "../pages/dashboard/DashboardOverview";
+import AddListing from "../pages/dashboard/AddListing";
+import MyListings from "../pages/dashboard/MyListings";
+import MyOrders from "../pages/dashboard/MyOrders";
+import Profile from "../pages/dashboard/Profile";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +47,10 @@ const router = createBrowserRouter([
         element: <ListingDetails />,
       },
       {
+        path: "/category/:categoryName",
+        element: <CategoryPage />,
+      },
+      {
         path: "/about",
         element: <About />,
       },
@@ -43,9 +58,35 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
       {
-        path: "/category/:categoryName",
-        element: <CategoryPage />,
+        index: true,
+        element: <DashboardOverview />,
+      },
+      {
+        path: "add-listing",
+        element: <AddListing />,
+      },
+      {
+        path: "my-listings",
+        element: <MyListings />,
+      },
+      {
+        path: "my-orders",
+        element: <MyOrders />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },
