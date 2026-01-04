@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 
 // Public Pages
 import Home from "../pages/Home";
@@ -21,6 +22,11 @@ import MyListings from "../pages/dashboard/MyListings";
 import UpdateListing from "../pages/dashboard/UpdateListing";
 import MyOrders from "../pages/dashboard/MyOrders";
 import Profile from "../pages/dashboard/Profile";
+
+// Admin Pages
+import ManageUsers from "../pages/dashboard/admin/ManageUsers";
+import ManageListings from "../pages/dashboard/admin/ManageListings";
+import ManageOrders from "../pages/dashboard/admin/ManageOrders";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +98,31 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      // Admin Routes
+      {
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-listings",
+        element: (
+          <AdminRoute>
+            <ManageListings />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-orders",
+        element: (
+          <AdminRoute>
+            <ManageOrders />
+          </AdminRoute>
+        ),
       },
     ],
   },
