@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
+import useTitle from "../hooks/useTitle";
+import Loading from "../components/Loading";
 
 function ListingDetails() {
+  useTitle("Listing Details");
+
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  // Order form state
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
-  const [orderError, setOrderError] = useState("");
-  const [orderSuccess, setOrderSuccess] = useState("");
 
   useEffect(() => {
     fetchListing();
@@ -30,10 +30,10 @@ function ListingDetails() {
       if (data.success) {
         setListing(data.data);
       } else {
-        setError("Listing not found");
+        toast.error("Listing not found");
       }
     } catch (err) {
-      setError("Error connecting to server");
+      toast.error("Error connecting to server");
       console.log(err);
     } finally {
       setLoading(false);
@@ -42,7 +42,7 @@ function ListingDetails() {
 
   const handleOrderClick = () => {
     if (!user) {
-      // Redirect to login if not logged in
+      toast.error("Please login to order");
       navigate("/login", { state: { from: { pathname: `/listing/${id}` } } });
       return;
     }
@@ -51,8 +51,6 @@ function ListingDetails() {
 
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
-    setOrderError("");
-    setOrderSuccess("");
     setOrderLoading(true);
 
     const form = e.target;
@@ -74,28 +72,22 @@ function ListingDetails() {
     try {
       const response = await fetch("http://localhost:5000/orders", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setOrderSuccess("Order placed successfully!");
+        toast.success("Order placed successfully!");
         form.reset();
-
-        // Close form and redirect
-        setTimeout(() => {
-          setShowOrderForm(false);
-          navigate("/dashboard/my-orders");
-        }, 2000);
+        setShowOrderForm(false);
+        navigate("/dashboard/my-orders");
       } else {
-        setOrderError(data.message || "Failed to place order");
+        toast.error(data.message || "Failed to place order");
       }
     } catch (err) {
-      setOrderError("Error connecting to server");
+      toast.error("Error connecting to server");
       console.log(err);
     } finally {
       setOrderLoading(false);
@@ -103,106 +95,125 @@ function ListingDetails() {
   };
 
   if (loading) {
-    return <p>Loading listing details...</p>;
+    return <Loading />;
   }
 
-  if (error) {
+  if (!listing) {
     return (
-      <div>
-        <p style={{ color: "red" }}>{error}</p>
+      <div style={{ padding: "40px", textAlign: "center" }}>
+        <p>Listing not found</p>
         <Link to="/pets-and-supplies">Back to Listings</Link>
       </div>
     );
   }
 
-  if (!listing) {
-    return <p>Listing not found</p>;
-  }
-
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <Link to="/pets-and-supplies">← Back to Listings</Link>
 
-      <h1>{listing.name}</h1>
+      <div
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          gap: "40px",
+          flexWrap: "wrap",
+        }}
+      >
+        {/* Image */}
+        <div style={{ flex: "1", minWidth: "300px" }}>
+          <img
+            src={listing.image}
+            alt={listing.name}
+            style={{ width: "100%", maxWidth: "500px", borderRadius: "5px" }}
+          />
+        </div>
 
-      {listing.image && (
-        <img
-          src={listing.image}
-          alt={listing.name}
-          style={{ maxWidth: "400px", display: "block", margin: "10px 0" }}
-        />
-      )}
+        {/* Details */}
+        <div style={{ flex: "1", minWidth: "300px" }}>
+          <h1>{listing.name}</h1>
 
-      <table border="1" cellPadding="10">
-        <tbody>
-          <tr>
-            <td>
-              <strong>Category</strong>
-            </td>
-            <td>{listing.category}</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Price</strong>
-            </td>
-            <td>
-              {listing.price === 0 ? "Free (Adoption)" : `৳${listing.price}`}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Location</strong>
-            </td>
-            <td>{listing.location}</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Owner Email</strong>
-            </td>
-            <td>{listing.email}</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Date</strong>
-            </td>
-            <td>{listing.date}</td>
-          </tr>
-        </tbody>
-      </table>
+          <p
+            style={{
+              display: "inline-block",
+              backgroundColor: "#eee",
+              padding: "5px 15px",
+              borderRadius: "20px",
+            }}
+          >
+            {listing.category}
+          </p>
 
-      <h3>Description</h3>
-      <p>{listing.description}</p>
+          <h2
+            style={{
+              marginTop: "20px",
+              color: listing.price === 0 ? "green" : "inherit",
+            }}
+          >
+            {listing.price === 0 ? "Free (Adoption)" : `৳${listing.price}`}
+          </h2>
 
-      <hr />
+          <table style={{ marginTop: "20px" }}>
+            <tbody>
+              <tr>
+                <td style={{ padding: "5px 20px 5px 0" }}>
+                  <strong>Location:</strong>
+                </td>
+                <td>📍 {listing.location}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: "5px 20px 5px 0" }}>
+                  <strong>Available:</strong>
+                </td>
+                <td>📅 {listing.date}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: "5px 20px 5px 0" }}>
+                  <strong>Owner:</strong>
+                </td>
+                <td>📧 {listing.email}</td>
+              </tr>
+            </tbody>
+          </table>
 
-      {/* Order Button */}
-      {!showOrderForm && (
-        <button
-          onClick={handleOrderClick}
-          style={{ padding: "10px 20px", fontSize: "16px" }}
-        >
-          {listing.category === "Pets" ? "Adopt Now" : "Order Now"}
-        </button>
-      )}
+          <h3 style={{ marginTop: "20px" }}>Description</h3>
+          <p>{listing.description}</p>
+
+          {/* Order Button */}
+          {!showOrderForm && (
+            <button
+              onClick={handleOrderClick}
+              style={{
+                padding: "15px 40px",
+                marginTop: "20px",
+                fontSize: "16px",
+                backgroundColor: "#333",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              {listing.category === "Pets" ? "🐾 Adopt Now" : "🛒 Order Now"}
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Order Form */}
       {showOrderForm && (
         <div
           style={{
             border: "1px solid #ccc",
-            padding: "20px",
-            marginTop: "20px",
+            padding: "30px",
+            marginTop: "30px",
+            maxWidth: "500px",
           }}
         >
           <h2>
             {listing.category === "Pets" ? "Adoption Form" : "Order Form"}
           </h2>
 
-          {orderError && <p style={{ color: "red" }}>{orderError}</p>}
-          {orderSuccess && <p style={{ color: "green" }}>{orderSuccess}</p>}
-
           <form onSubmit={handleOrderSubmit}>
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "15px" }}>
               <label>Your Name: *</label>
               <br />
               <input
@@ -210,11 +221,11 @@ function ListingDetails() {
                 name="buyerName"
                 defaultValue={user?.displayName || ""}
                 required
-                style={{ width: "300px", padding: "5px" }}
+                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
               />
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "15px" }}>
               <label>Your Email:</label>
               <br />
               <input
@@ -222,45 +233,32 @@ function ListingDetails() {
                 value={user?.email || ""}
                 readOnly
                 style={{
-                  width: "300px",
-                  padding: "5px",
+                  width: "100%",
+                  padding: "10px",
+                  marginTop: "5px",
                   backgroundColor: "#f0f0f0",
                 }}
               />
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
-              <label>Product/Pet:</label>
+            <div style={{ marginBottom: "15px" }}>
+              <label>Product:</label>
               <br />
               <input
                 type="text"
                 value={listing.name}
                 readOnly
                 style={{
-                  width: "300px",
-                  padding: "5px",
-                  backgroundColor: "#f0f0f0",
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: "10px" }}>
-              <label>Price:</label>
-              <br />
-              <input
-                type="text"
-                value={listing.price === 0 ? "Free" : `৳${listing.price}`}
-                readOnly
-                style={{
-                  width: "300px",
-                  padding: "5px",
+                  width: "100%",
+                  padding: "10px",
+                  marginTop: "5px",
                   backgroundColor: "#f0f0f0",
                 }}
               />
             </div>
 
             {listing.category !== "Pets" && (
-              <div style={{ marginBottom: "10px" }}>
+              <div style={{ marginBottom: "15px" }}>
                 <label>Quantity: *</label>
                 <br />
                 <input
@@ -269,12 +267,12 @@ function ListingDetails() {
                   min="1"
                   defaultValue="1"
                   required
-                  style={{ width: "300px", padding: "5px" }}
+                  style={{ width: "100%", padding: "10px", marginTop: "5px" }}
                 />
               </div>
             )}
 
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "15px" }}>
               <label>Delivery Address: *</label>
               <br />
               <textarea
@@ -282,11 +280,11 @@ function ListingDetails() {
                 required
                 rows="3"
                 placeholder="Enter your full address"
-                style={{ width: "300px", padding: "5px" }}
+                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
               ></textarea>
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "15px" }}>
               <label>Phone Number: *</label>
               <br />
               <input
@@ -294,43 +292,43 @@ function ListingDetails() {
                 name="phone"
                 required
                 placeholder="01XXXXXXXXX"
-                style={{ width: "300px", padding: "5px" }}
+                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
               />
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "15px" }}>
               <label>Preferred Date: *</label>
               <br />
               <input
                 type="date"
                 name="date"
                 required
-                style={{ width: "310px", padding: "5px" }}
+                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
               />
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "15px" }}>
               <label>Additional Notes:</label>
               <br />
               <textarea
                 name="notes"
-                rows="3"
+                rows="2"
                 placeholder="Any special instructions..."
-                style={{ width: "300px", padding: "5px" }}
+                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
               ></textarea>
             </div>
 
             <button
               type="submit"
               disabled={orderLoading}
-              style={{ padding: "10px 20px", marginRight: "10px" }}
+              style={{ padding: "10px 30px", marginRight: "10px" }}
             >
               {orderLoading ? "Placing Order..." : "Confirm Order"}
             </button>
             <button
               type="button"
               onClick={() => setShowOrderForm(false)}
-              style={{ padding: "10px 20px" }}
+              style={{ padding: "10px 30px" }}
             >
               Cancel
             </button>

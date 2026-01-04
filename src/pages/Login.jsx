@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
+import useTitle from "../hooks/useTitle";
 
 function Login() {
+  useTitle("Login");
   const { signIn, googleSignIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // redirect after login
   const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setLoading(true);
 
     const form = e.target;
     const email = form.email.value;
@@ -24,26 +24,22 @@ function Login() {
 
     try {
       await signIn(email, password);
-      setSuccess("Login successful!");
-
-      // Redirect after 1 second
-      setTimeout(() => {
-        navigate(from, { replace: true });
-      }, 1000);
+      toast.success("Login successful!");
+      navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Login failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
-    setError("");
-    setSuccess("");
+    setLoading(true);
 
     try {
       const result = await googleSignIn();
       const user = result.user;
 
-      // Save new user to database
       const userData = {
         name: user.displayName,
         email: user.email,
@@ -52,20 +48,19 @@ function Login() {
 
       await fetch("http://localhost:5000/users", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
-      setSuccess("Google sign in successful!");
+      toast.success("Google sign in successful!");
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Google sign in failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Demo credentials auto-fill
   const fillDemoUser = () => {
     document.querySelector('input[name="email"]').value = "user@pawmart.com";
     document.querySelector('input[name="password"]').value = "User123";
@@ -77,43 +72,60 @@ function Login() {
   };
 
   return (
-    <div>
+    <div style={{ padding: "40px", maxWidth: "400px", margin: "0 auto" }}>
       <h1>Login</h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-
       <form onSubmit={handleLogin}>
-        <div>
+        <div style={{ marginBottom: "15px" }}>
           <label>Email:</label>
-          <input type="email" name="email" required />
+          <br />
+          <input
+            type="email"
+            name="email"
+            required
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+          />
         </div>
 
-        <div>
+        <div style={{ marginBottom: "15px" }}>
           <label>Password:</label>
-          <input type="password" name="password" required />
+          <br />
+          <input
+            type="password"
+            name="password"
+            required
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+          />
         </div>
 
-        <button type="submit">Login</button>
+        <button
+          type="submit"
+          disabled={loading}
+          style={{ width: "100%", padding: "10px" }}
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
 
-      <hr />
-
-      <div>
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
         <p>Demo Credentials:</p>
-        <button type="button" onClick={fillDemoUser}>
-          Login as User
+        <button onClick={fillDemoUser} style={{ marginRight: "10px" }}>
+          Demo User
         </button>
-        <button type="button" onClick={fillDemoAdmin}>
-          Login as Admin
-        </button>
+        <button onClick={fillDemoAdmin}>Demo Admin</button>
       </div>
 
-      <hr />
+      <hr style={{ margin: "20px 0" }} />
 
-      <button onClick={handleGoogleSignIn}>Sign in with Google</button>
+      <button
+        onClick={handleGoogleSignIn}
+        disabled={loading}
+        style={{ width: "100%", padding: "10px" }}
+      >
+        Sign in with Google
+      </button>
 
-      <p>
+      <p style={{ marginTop: "20px", textAlign: "center" }}>
         Don't have an account? <Link to="/register">Register here</Link>
       </p>
     </div>

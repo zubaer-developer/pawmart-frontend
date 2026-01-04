@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
+import Loading from "../../components/Loading";
 
 function MyListings() {
+  useTitle("My Listings");
+
   const { user } = useAuth();
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     if (user?.email) {
@@ -21,16 +25,15 @@ function MyListings() {
       const data = await response.json();
 
       if (data.success) {
-        // Filter listings by current user email
         const myListings = data.data.filter(
           (listing) => listing.email === user.email
         );
         setListings(myListings);
       } else {
-        setError("Failed to fetch listings");
+        toast.error("Failed to fetch listings");
       }
     } catch (err) {
-      setError("Error connecting to server");
+      toast.error("Error connecting to server");
       console.log(err);
     } finally {
       setLoading(false);
@@ -41,7 +44,6 @@ function MyListings() {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this listing?"
     );
-
     if (!confirmDelete) return;
 
     try {
@@ -51,32 +53,37 @@ function MyListings() {
       const data = await response.json();
 
       if (data.success) {
-        // Remove from local state
         setListings(listings.filter((listing) => listing._id !== id));
-        alert("Listing deleted successfully!");
+        toast.success("Listing deleted successfully!");
       } else {
-        alert("Failed to delete listing");
+        toast.error("Failed to delete listing");
       }
     } catch (err) {
-      alert("Error deleting listing");
+      toast.error("Error deleting listing");
       console.log(err);
     }
   };
 
   if (loading) {
-    return <p>Loading your listings...</p>;
-  }
-
-  if (error) {
-    return <p style={{ color: "red" }}>{error}</p>;
+    return <Loading />;
   }
 
   return (
     <div>
-      <h1>My Listings</h1>
-      <p>Total: {listings.length} listings</p>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h1>My Listings</h1>
+        <Link to="/dashboard/add-listing">
+          <button style={{ padding: "10px 20px" }}>+ Add New</button>
+        </Link>
+      </div>
 
-      <Link to="/dashboard/add-listing">+ Add New Listing</Link>
+      <p>Total: {listings.length} listings</p>
 
       {listings.length === 0 ? (
         <p>You have no listings yet.</p>
@@ -118,17 +125,11 @@ function MyListings() {
                 <td>{listing.date}</td>
                 <td>
                   <Link to={`/dashboard/update-listing/${listing._id}`}>
-                    Edit
+                    <button style={{ marginRight: "5px" }}>Edit</button>
                   </Link>
-                  {" | "}
                   <button
                     onClick={() => handleDelete(listing._id)}
-                    style={{
-                      color: "red",
-                      cursor: "pointer",
-                      background: "none",
-                      border: "none",
-                    }}
+                    style={{ color: "red" }}
                   >
                     Delete
                   </button>

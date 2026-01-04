@@ -1,6 +1,8 @@
 import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 function Profile() {
+  useTitle("My Profile");
   const { user } = useAuth();
 
   return (

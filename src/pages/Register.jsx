@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
+import useTitle from "../hooks/useTitle";
 
 function Register() {
+  useTitle("Register");
+
   const { createUser, updateUserProfile, googleSignIn } = useAuth();
   const navigate = useNavigate();
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setLoading(true);
 
     const form = e.target;
     const name = form.name.value;
@@ -23,76 +25,68 @@ function Register() {
 
     // Validation
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Passwords do not match");
+      setLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      toast.error("Password must be at least 6 characters");
+      setLoading(false);
       return;
     }
 
     if (!/[A-Z]/.test(password)) {
-      setError("Password must contain at least one uppercase letter");
+      toast.error("Password must contain at least one uppercase letter");
+      setLoading(false);
       return;
     }
 
     if (!/[a-z]/.test(password)) {
-      setError("Password must contain at least one lowercase letter");
+      toast.error("Password must contain at least one lowercase letter");
+      setLoading(false);
       return;
     }
 
     if (!/[0-9]/.test(password)) {
-      setError("Password must contain at least one number");
+      toast.error("Password must contain at least one number");
+      setLoading(false);
       return;
     }
 
     try {
-      // Create user in Firebase
       await createUser(email, password);
-
-      // Update profile with name and photo
       await updateUserProfile(name, photo);
 
-      // Save user to database
       const userData = {
         name: name,
         email: email,
         avatar: photo,
       };
 
-      const response = await fetch("http://localhost:5000/users", {
+      await fetch("http://localhost:5000/users", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
-      const data = await response.json();
-      console.log("User saved to database:", data);
-
-      setSuccess("Registration successful!");
+      toast.success("Registration successful!");
       form.reset();
-
-      // Redirect to home after 1 second
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Registration failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
-    setError("");
-    setSuccess("");
+    setLoading(true);
 
     try {
       const result = await googleSignIn();
       const user = result.user;
 
-      // Save user to database
       const userData = {
         name: user.displayName,
         email: user.email,
@@ -101,64 +95,102 @@ function Register() {
 
       await fetch("http://localhost:5000/users", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
-      setSuccess("Google sign in successful!");
+      toast.success("Google sign in successful!");
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Google sign in failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div style={{ padding: "40px", maxWidth: "400px", margin: "0 auto" }}>
       <h1>Register</h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-
       <form onSubmit={handleRegister}>
-        <div>
-          <label>Name:</label>
-          <input type="text" name="name" required />
+        <div style={{ marginBottom: "15px" }}>
+          <label>Name: *</label>
+          <br />
+          <input
+            type="text"
+            name="name"
+            required
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+          />
         </div>
 
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" required />
+        <div style={{ marginBottom: "15px" }}>
+          <label>Email: *</label>
+          <br />
+          <input
+            type="email"
+            name="email"
+            required
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+          />
         </div>
 
-        <div>
+        <div style={{ marginBottom: "15px" }}>
           <label>Photo URL:</label>
+          <br />
           <input
             type="url"
             name="photo"
             placeholder="https://example.com/photo.jpg"
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
           />
         </div>
 
-        <div>
-          <label>Password:</label>
-          <input type="password" name="password" required />
+        <div style={{ marginBottom: "15px" }}>
+          <label>Password: *</label>
+          <br />
+          <input
+            type="password"
+            name="password"
+            required
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+          />
+          <small style={{ color: "#666" }}>
+            Min 6 chars, 1 uppercase, 1 lowercase, 1 number
+          </small>
         </div>
 
-        <div>
-          <label>Confirm Password:</label>
-          <input type="password" name="confirmPassword" required />
+        <div style={{ marginBottom: "15px" }}>
+          <label>Confirm Password: *</label>
+          <br />
+          <input
+            type="password"
+            name="confirmPassword"
+            required
+            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+          />
         </div>
 
-        <button type="submit">Register</button>
+        <button
+          type="submit"
+          disabled={loading}
+          style={{ width: "100%", padding: "10px" }}
+        >
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
 
-      <hr />
+      <hr style={{ margin: "20px 0" }} />
 
-      <button onClick={handleGoogleSignIn}>Sign in with Google</button>
+      <button
+        onClick={handleGoogleSignIn}
+        disabled={loading}
+        style={{ width: "100%", padding: "10px" }}
+      >
+        Sign up with Google
+      </button>
 
-      <p>
+      <p style={{ marginTop: "20px", textAlign: "center" }}>
         Already have an account? <Link to="/login">Login here</Link>
       </p>
     </div>

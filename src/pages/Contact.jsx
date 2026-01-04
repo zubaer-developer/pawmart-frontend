@@ -1,6 +1,8 @@
 import { useState } from "react";
+import useTitle from "../hooks/useTitle";
 
 function Contact() {
+  useTitle("Contact Us");
   const [formData, setFormData] = useState({
     name: "",
     email: "",

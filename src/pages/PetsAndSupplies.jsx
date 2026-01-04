@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useTitle from "../hooks/useTitle";
 
 function PetsAndSupplies() {
+  useTitle("Pets & Supplies");
   // All listings from database
   const [allListings, setAllListings] = useState([]);
 

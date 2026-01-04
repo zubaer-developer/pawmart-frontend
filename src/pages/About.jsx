@@ -1,4 +1,7 @@
+import useTitle from "../hooks/useTitle";
+
 function About() {
+  useTitle("About Us");
   const teamMembers = [
     {
       name: "Rahim Khan",

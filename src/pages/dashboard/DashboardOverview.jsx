@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 function DashboardOverview() {
+  useTitle("Dashboard");
   const { user } = useAuth();
   const [stats, setStats] = useState({
     totalListings: 0,

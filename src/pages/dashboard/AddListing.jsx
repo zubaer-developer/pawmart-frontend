@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 function AddListing() {
+  useTitle("Add Listing");
+
   const { user } = useAuth();
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
     setLoading(true);
 
     const form = e.target;
@@ -32,34 +31,27 @@ function AddListing() {
     try {
       const response = await fetch("http://localhost:5000/listings", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(listingData),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setSuccess("Listing created successfully!");
+        toast.success("Listing created successfully!");
         form.reset();
-
-        // Redirect to My Listings
-        setTimeout(() => {
-          navigate("/dashboard/my-listings");
-        }, 1000);
+        navigate("/dashboard/my-listings");
       } else {
-        setError(data.message || "Failed to create listing");
+        toast.error(data.message || "Failed to create listing");
       }
     } catch (err) {
-      setError("Error connecting to server");
+      toast.error("Error connecting to server");
       console.log(err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto set price to 0 when category is "Pets"
   const handleCategoryChange = (e) => {
     const category = e.target.value;
     const priceInput = document.querySelector('input[name="price"]');
@@ -76,9 +68,6 @@ function AddListing() {
     <div>
       <h1>Add New Listing</h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "10px" }}>
           <label>Pet/Product Name: *</label>
@@ -88,7 +77,7 @@ function AddListing() {
             name="name"
             required
             placeholder="Enter name"
-            style={{ width: "300px", padding: "5px" }}
+            style={{ width: "300px", padding: "8px" }}
           />
         </div>
 
@@ -99,10 +88,10 @@ function AddListing() {
             name="category"
             required
             onChange={handleCategoryChange}
-            style={{ width: "310px", padding: "5px" }}
+            style={{ width: "320px", padding: "8px" }}
           >
             <option value="">Select Category</option>
-            <option value="Pets">Pets Adoption</option>
+            <option value="Pets">Pets (Adoption)</option>
             <option value="Food">Pet Food</option>
             <option value="Accessories">Accessories</option>
             <option value="Care Products">Care Products</option>
@@ -110,7 +99,7 @@ function AddListing() {
         </div>
 
         <div style={{ marginBottom: "10px" }}>
-          <label>Price : *</label>
+          <label>Price (BDT): *</label>
           <br />
           <input
             type="number"
@@ -118,8 +107,7 @@ function AddListing() {
             required
             min="0"
             defaultValue="0"
-            placeholder="0 for free adoption"
-            style={{ width: "300px", padding: "5px" }}
+            style={{ width: "300px", padding: "8px" }}
           />
           <small style={{ display: "block", color: "#666" }}>
             Set 0 for free pet adoption
@@ -133,8 +121,8 @@ function AddListing() {
             type="text"
             name="location"
             required
-            placeholder="e.g., Dhaka, Chittagong"
-            style={{ width: "300px", padding: "5px" }}
+            placeholder="e.g., Dhaka"
+            style={{ width: "300px", padding: "8px" }}
           />
         </div>
 
@@ -146,7 +134,7 @@ function AddListing() {
             required
             rows="4"
             placeholder="Describe your pet or product..."
-            style={{ width: "300px", padding: "5px" }}
+            style={{ width: "300px", padding: "8px" }}
           ></textarea>
         </div>
 
@@ -158,7 +146,7 @@ function AddListing() {
             name="image"
             required
             placeholder="https://example.com/image.jpg"
-            style={{ width: "300px", padding: "5px" }}
+            style={{ width: "300px", padding: "8px" }}
           />
         </div>
 
@@ -169,7 +157,7 @@ function AddListing() {
             type="date"
             name="date"
             required
-            style={{ width: "310px", padding: "5px" }}
+            style={{ width: "320px", padding: "8px" }}
           />
         </div>
 
@@ -182,7 +170,7 @@ function AddListing() {
             readOnly
             style={{
               width: "300px",
-              padding: "5px",
+              padding: "8px",
               backgroundColor: "#f0f0f0",
             }}
           />
@@ -191,7 +179,7 @@ function AddListing() {
         <button
           type="submit"
           disabled={loading}
-          style={{ padding: "10px 20px", marginTop: "10px" }}
+          style={{ padding: "10px 30px", marginTop: "10px" }}
         >
           {loading ? "Creating..." : "Create Listing"}
         </button>
