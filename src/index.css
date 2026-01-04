@@ -1,0 +1,100 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 via-orange-500 to-amber-500 bg-clip-text text-transparent;
+  }
+
+  /* Gradient Background */
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary-500 to-orange-600;
+  }
+
+  /* Glass Effect */
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+
+  /* Card Hover Effect */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  /* Button Gradient */
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-orange-600 text-white border-0 hover:from-primary-600 hover:to-orange-700 transition-all duration-300;
+  }
+
+  /* Section Title */
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-center mb-4;
+  }
+
+  /* Section Subtitle */
+  .section-subtitle {
+    @apply text-gray-500 text-center max-w-2xl mx-auto mb-12;
+  }
+
+  /* Input Focus Ring */
+  .input-focus {
+    @apply focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:border-primary-500 transition-all duration-200;
+  }
+}
+
+@layer utilities {
+  /* Animation Delays */
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  /* Floating Animation */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Pulse Glow */
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(249, 115, 22, 0.6);
+    }
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}

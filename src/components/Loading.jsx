@@ -1,32 +1,39 @@
 function Loading() {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "60vh",
-      }}
-    >
-      <div style={{ textAlign: "center" }}>
-        <div
-          style={{
-            width: "50px",
-            height: "50px",
-            border: "5px solid #f3f3f3",
-            borderTop: "5px solid #333",
-            borderRadius: "50%",
-            animation: "spin 1s linear infinite",
-            margin: "0 auto",
-          }}
-        ></div>
-        <p style={{ marginTop: "15px" }}>Loading...</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-base-100 via-base-200 to-base-300">
+      {/* Animated Paw Prints */}
+      <div className="relative">
+        <div className="flex gap-4 mb-8">
+          <span className="text-5xl animate-bounce">🐾</span>
+          <span className="text-5xl animate-bounce animation-delay-200">
+            🐾
+          </span>
+          <span className="text-5xl animate-bounce animation-delay-400">
+            🐾
+          </span>
+        </div>
       </div>
 
+      {/* Loading Bar */}
+      <div className="w-64 h-2 bg-base-300 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-primary-500 via-orange-500 to-amber-500 rounded-full animate-pulse"
+          style={{
+            width: "60%",
+            animation: "loading 1.5s ease-in-out infinite",
+          }}
+        ></div>
+      </div>
+
+      <p className="mt-6 text-gray-500 font-medium animate-pulse">
+        Loading amazing pets...
+      </p>
+
       <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+        @keyframes loading {
+          0% { width: 0%; margin-left: 0; }
+          50% { width: 60%; margin-left: 20%; }
+          100% { width: 0%; margin-left: 100%; }
         }
       `}</style>
     </div>
