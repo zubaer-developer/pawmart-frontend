@@ -11,6 +11,8 @@ function Register() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -29,27 +31,23 @@ function Register() {
       setLoading(false);
       return;
     }
-
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
       setLoading(false);
       return;
     }
-
     if (!/[A-Z]/.test(password)) {
-      toast.error("Password must contain at least one uppercase letter");
+      toast.error("Password must contain uppercase letter");
       setLoading(false);
       return;
     }
-
     if (!/[a-z]/.test(password)) {
-      toast.error("Password must contain at least one lowercase letter");
+      toast.error("Password must contain lowercase letter");
       setLoading(false);
       return;
     }
-
     if (!/[0-9]/.test(password)) {
-      toast.error("Password must contain at least one number");
+      toast.error("Password must contain a number");
       setLoading(false);
       return;
     }
@@ -58,20 +56,13 @@ function Register() {
       await createUser(email, password);
       await updateUserProfile(name, photo);
 
-      const userData = {
-        name: name,
-        email: email,
-        avatar: photo,
-      };
-
       await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({ name, email, avatar: photo }),
       });
 
-      toast.success("Registration successful!");
-      form.reset();
+      toast.success("Account created! 🎉");
       navigate("/");
     } catch (err) {
       toast.error(err.message || "Registration failed!");
@@ -82,24 +73,21 @@ function Register() {
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
-
     try {
       const result = await googleSignIn();
       const user = result.user;
 
-      const userData = {
-        name: user.displayName,
-        email: user.email,
-        avatar: user.photoURL,
-      };
-
       await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          avatar: user.photoURL,
+        }),
       });
 
-      toast.success("Google sign in successful!");
+      toast.success("Welcome to PawMart! 🎉");
       navigate("/");
     } catch (err) {
       toast.error(err.message || "Google sign in failed!");
@@ -109,90 +97,188 @@ function Register() {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "400px", margin: "0 auto" }}>
-      <h1>Register</h1>
-
-      <form onSubmit={handleRegister}>
-        <div style={{ marginBottom: "15px" }}>
-          <label>Name: *</label>
-          <br />
-          <input
-            type="text"
-            name="name"
-            required
-            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="w-full max-w-md bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+        {/* Logo */}
+        <div className="text-center mb-4">
+          <Link to="/" className="inline-block mb-1">
+            <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-2xl shadow-md mx-auto">
+              🐾
+            </div>
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-800">Create Account</h1>
+          <p className="text-sm text-gray-500">Join PawMart community today</p>
         </div>
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Email: *</label>
-          <br />
-          <input
-            type="email"
-            name="email"
-            required
-            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-          />
+        {/* Form */}
+        <form onSubmit={handleRegister} className="space-y-3">
+          {/* Name */}
+          <div>
+            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+              Full Name
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+                👤
+              </span>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                className="w-full pl-12 pr-4 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+              Email Address
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+                📧
+              </span>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                className="w-full pl-12 pr-4 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Photo URL */}
+          <div>
+            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+              Photo URL{" "}
+              <span className="text-gray-400 font-normal lowercase">
+                (optional)
+              </span>
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+                🖼️
+              </span>
+              <input
+                type="url"
+                name="photo"
+                placeholder="https://example.com/photo.jpg"
+                className="w-full pl-12 pr-4 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+              Password
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+                🔒
+              </span>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Create password"
+                className="w-full pl-12 pr-12 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-lg text-gray-400"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+                🔐
+              </span>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm password"
+                className="w-full pl-12 pr-12 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-lg text-gray-400"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 mt-2 gradient-primary text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-70"
+          >
+            {loading ? "Creating..." : "Create Account →"}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="flex items-center gap-3 my-4">
+          <div className="flex-1 h-px bg-gray-100"></div>
+          <span className="text-[10px] text-gray-400 font-bold uppercase">
+            OR
+          </span>
+          <div className="flex-1 h-px bg-gray-100"></div>
         </div>
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Photo URL:</label>
-          <br />
-          <input
-            type="url"
-            name="photo"
-            placeholder="https://example.com/photo.jpg"
-            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <label>Password: *</label>
-          <br />
-          <input
-            type="password"
-            name="password"
-            required
-            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-          />
-          <small style={{ color: "#666" }}>
-            Min 6 chars, 1 uppercase, 1 lowercase, 1 number
-          </small>
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <label>Confirm Password: *</label>
-          <br />
-          <input
-            type="password"
-            name="confirmPassword"
-            required
-            style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-          />
-        </div>
-
+        {/* Google Button */}
         <button
-          type="submit"
+          onClick={handleGoogleSignIn}
           disabled={loading}
-          style={{ width: "100%", padding: "10px" }}
+          className="w-full py-2.5 bg-white border border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 text-sm"
         >
-          {loading ? "Registering..." : "Register"}
+          <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <path
+              fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            />
+            <path
+              fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+            />
+            <path
+              fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+            />
+          </svg>
+          Continue with Google
         </button>
-      </form>
 
-      <hr style={{ margin: "20px 0" }} />
-
-      <button
-        onClick={handleGoogleSignIn}
-        disabled={loading}
-        style={{ width: "100%", padding: "10px" }}
-      >
-        Sign up with Google
-      </button>
-
-      <p style={{ marginTop: "20px", textAlign: "center" }}>
-        Already have an account? <Link to="/login">Login here</Link>
-      </p>
+        <p className="text-center mt-4 text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-orange-500 font-bold hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
