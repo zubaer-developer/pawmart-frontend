@@ -1,3 +1,5 @@
+import React from "react";
+
 function PetHeroes() {
   const heroes = [
     {
@@ -35,54 +37,52 @@ function PetHeroes() {
   ];
 
   return (
-    <section className="py-10 bg-white">
-      <div className="container mx-auto px-4 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-10">
-          <span className="inline-block px-4 py-2 bg-purple-100 text-purple-600 rounded-full text-sm font-semibold mb-4">
-            🦸 Community Heroes
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Meet Our Pet Heroes
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            These amazing individuals have made a real difference in the lives
-            of pets
+    <section className="py-12 bg-white dark:bg-gray-950 transition-colors duration-300">
+      <div className="container mx-auto ">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div className="text-left">
+            <span className="text-purple-500 text-xs font-bold uppercase tracking-widest mb-2 block">
+              Community Heroes
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-none">
+              Meet Our Pet Heroes
+            </h2>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs">
+            Amazing individuals making a real difference in the lives of pets.
           </p>
         </div>
 
-        {/* Heroes Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {heroes.map((hero, index) => (
             <div
               key={hero.name}
-              className="group bg-gray-50 rounded-3xl p-6 text-center hover:bg-white hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group relative p-5 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-transparent hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-300 hover:shadow-md active:scale-95"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Avatar */}
-              <div className="relative inline-block mb-4">
-                <img
-                  src={hero.image}
-                  alt={hero.name}
-                  className="w-24 h-24 rounded-full object-cover ring-4 ring-white shadow-lg group-hover:ring-orange-100 transition-all duration-300"
-                />
-                <div className="absolute -bottom-2 -right-2 bg-linear-to-r from-orange-400 to-rose-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                  {hero.pets}+ 🐾
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-3">
+                  <img
+                    src={hero.image}
+                    alt={hero.name}
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-white dark:ring-gray-800 shadow-md group-hover:ring-purple-400 transition-all duration-300"
+                  />
+                  <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-orange-400 to-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
+                    {hero.pets}+
+                  </div>
                 </div>
+
+                <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-0.5 truncate w-full">
+                  {hero.name}
+                </h3>
+                <p className="text-purple-500 text-[10px] font-bold uppercase tracking-tighter mb-2">
+                  {hero.role}
+                </p>
+
+                <p className="text-gray-600 dark:text-gray-400 text-xs italic leading-snug line-clamp-2">
+                  "{hero.quote}"
+                </p>
               </div>
-
-              {/* Info */}
-              <h3 className="font-bold text-gray-900 text-lg mb-1">
-                {hero.name}
-              </h3>
-              <p className="text-orange-500 text-sm font-medium mb-4">
-                {hero.role}
-              </p>
-
-              {/* Quote */}
-              <p className="text-gray-600 text-sm italic leading-relaxed">
-                "{hero.quote}"
-              </p>
             </div>
           ))}
         </div>

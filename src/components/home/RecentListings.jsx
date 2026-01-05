@@ -24,119 +24,106 @@ function RecentListings() {
   };
 
   return (
-    <section className="py-20 bg-linear-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-green-100 text-green-600 rounded-full text-sm font-semibold mb-4">
-            Fresh Arrivals
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Recent Listings
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Check out the latest pets and products added to our marketplace
-          </p>
+    <section className="py-12 bg-white dark:bg-gray-950 transition-colors">
+      <div className="container mx-auto ">
+        {/* Header */}
+        <div className="flex items-end justify-between mb-8">
+          <div>
+            <span className="text-orange-500 text-xs font-bold uppercase tracking-widest mb-1 block">
+              New Arrivals
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white">
+              Recent Listings
+            </h2>
+          </div>
+          <Link
+            to="/pets-and-supplies"
+            className="hidden sm:block text-sm font-bold text-orange-500 hover:underline"
+          >
+            View All →
+          </Link>
         </div>
 
         {/* Loading State */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-3xl p-4 animate-pulse">
-                <div className="w-full h-48 bg-gray-200 rounded-2xl mb-4"></div>
-                <div className="h-6 bg-gray-200 rounded-lg mb-2 w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded-lg w-1/2"></div>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div
+                key={i}
+                className="h-64 bg-gray-100 dark:bg-gray-900 rounded-2xl animate-pulse"
+              ></div>
             ))}
           </div>
         ) : listings.length === 0 ? (
-          <div className="text-center py-12">
-            <span className="text-6xl mb-4 block">🐾</span>
-            <p className="text-gray-500">
-              No listings available yet. Be the first to add!
-            </p>
+          <div className="text-center py-10 opacity-50">
+            <p className="text-lg">No listings available yet. 🐾</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          /* Grid: 2 columns on mobile, 4 on desktop */
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {listings.map((listing, index) => (
               <div
                 key={listing._id}
-                className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="group bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 shadow-sm hover:shadow-md"
+                style={{ animationDelay: `${index * 50}ms` }}
               >
                 {/* Image Container */}
-                <div className="relative overflow-hidden">
+                <div className="relative h-40 md:h-44 overflow-hidden">
                   <img
                     src={listing.image}
                     alt={listing.name}
-                    className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
 
                   {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-medium rounded-full">
+                  <div className="absolute top-2 left-2">
+                    <span className="px-2 py-0.5 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold rounded-md uppercase">
                       {listing.category}
                     </span>
                   </div>
 
                   {/* Price Badge */}
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute bottom-2 right-2">
                     <span
-                      className={`px-3 py-1 ${
+                      className={`px-2 py-1 rounded-lg text-[11px] font-bold text-white shadow-sm ${
                         listing.price === 0 ? "bg-green-500" : "bg-orange-500"
-                      } text-white text-sm font-bold rounded-full`}
+                      }`}
                     >
                       {listing.price === 0 ? "Free" : `৳${listing.price}`}
                     </span>
                   </div>
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors">
+                <div className="p-3">
+                  <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white truncate mb-1">
                     {listing.name}
                   </h3>
 
-                  <div className="flex items-center gap-2 text-gray-500 text-sm mb-4">
+                  <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-[11px] mb-3">
                     <span>📍</span>
-                    <span>{listing.location}</span>
+                    <span className="truncate">{listing.location}</span>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm">
-                        👤
-                      </div>
-                      <span className="text-sm text-gray-500 truncate max-w-[120px]">
-                        {listing.email?.split("@")[0]}
-                      </span>
-                    </div>
-
-                    <Link
-                      to={`/listing/${listing._id}`}
-                      className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-orange-500 hover:text-white transition-all duration-300"
-                    >
-                      Details →
-                    </Link>
-                  </div>
+                  <Link
+                    to={`/listing/${listing._id}`}
+                    className="block w-full text-center py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-bold rounded-xl group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all active:scale-95"
+                  >
+                    Details
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
+        {/* Mobile-only View All */}
+        <div className="mt-8 text-center sm:hidden">
           <Link
             to="/pets-and-supplies"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 hover:-translate-y-1 transition-all duration-300 shadow-lg"
+            className="btn btn-ghost btn-sm text-orange-500"
           >
-            <span>View All Listings</span>
-            <span>→</span>
+            View All Listings →
           </Link>
         </div>
       </div>

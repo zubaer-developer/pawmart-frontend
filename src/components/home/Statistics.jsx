@@ -62,7 +62,7 @@ function Statistics() {
       suffix: "+",
     },
     {
-      label: "Successful Orders",
+      label: "Orders Done",
       value: stats.totalOrders,
       icon: "✅",
       color: "from-purple-400 to-pink-500",
@@ -71,46 +71,33 @@ function Statistics() {
   ];
 
   return (
-    <section className="py-20 bg-gray-900 relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-white/10 text-white rounded-full text-sm font-semibold mb-4">
-            📊 Our Impact
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            PawMart in Numbers
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Join thousands of pet lovers who trust PawMart for their adoption
-            and shopping needs
-          </p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+    <section className="py-12 bg-gray-950 border-y border-white/5">
+      <div className="container mx-auto ">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {statsData.map((stat, index) => (
             <div
               key={stat.label}
-              className="relative group"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="flex items-center gap-4 group"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 text-center hover:bg-white/10 transition-all duration-500 hover:-translate-y-2">
-                {/* Icon */}
-                <div
-                  className={`w-16 h-16 mx-auto mb-4 bg-linear-to-br ${stat.color} rounded-2xl flex items-center justify-center text-3xl shadow-lg`}
-                >
-                  {stat.icon}
+              <div
+                className={`shrink-0 w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-black/20 group-hover:scale-110 transition-transform`}
+              >
+                {stat.icon}
+              </div>
+
+              <div>
+                <div className="flex items-baseline gap-0.5">
+                  <span className="text-2xl md:text-3xl font-black text-white tracking-tight">
+                    {stat.value}
+                  </span>
+                  <span className="text-orange-500 font-bold text-lg">
+                    {stat.suffix}
+                  </span>
                 </div>
-
-                {/* Number */}
-                <h3 className="text-4xl lg:text-5xl font-black text-white mb-2">
-                  {stat.value}
-                  {stat.suffix}
-                </h3>
-
-                {/* Label */}
-                <p className="text-gray-400 font-medium">{stat.label}</p>
+                <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-gray-500">
+                  {stat.label}
+                </p>
               </div>
             </div>
           ))}

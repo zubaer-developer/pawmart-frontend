@@ -11,7 +11,6 @@ function Newsletter() {
 
     setLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
       toast.success("Thanks for subscribing! 🎉");
       setEmail("");
@@ -20,72 +19,50 @@ function Newsletter() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 text-8xl">🐾</div>
-        <div className="absolute bottom-10 right-10 text-8xl">🐾</div>
-        <div className="absolute top-1/2 left-1/4 text-6xl">🐕</div>
-        <div className="absolute bottom-1/3 right-1/4 text-6xl">🐈</div>
+    <section className="py-12 bg-linear-to-r from-orange-500 to-rose-500 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-4 left-4 text-4xl">🐾</div>
+        <div className="absolute bottom-4 right-4 text-4xl">🐾</div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Icon */}
-          <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl mx-auto mb-6">
-            📬
+      <div className="container mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-left md:max-w-md">
+            <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2">
+              Stay Updated!
+            </h2>
+            <p className="text-white/80 text-sm md:text-base font-medium">
+              Join 5,000+ pet lovers for exclusive deals and care tips.
+            </p>
           </div>
 
-          {/* Content */}
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Stay Updated!
-          </h2>
-          <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
-            Subscribe to our newsletter for the latest pets, exclusive deals,
-            and pet care tips delivered straight to your inbox.
-          </p>
-
-          {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto"
+            className="w-full md:max-w-md flex flex-col sm:flex-row gap-2"
           >
             <div className="flex-1 relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                📧
-              </span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="w-full pl-12 pr-4 py-4 bg-white rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all"
+                placeholder="Email address"
+                className="w-full h-12 pl-4 pr-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:bg-white focus:text-gray-900 transition-all text-sm"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all duration-300 hover:-translate-y-1 shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
+              className="h-12 px-6 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all active:scale-95 disabled:opacity-70 flex items-center justify-center gap-2 text-sm whitespace-nowrap"
             >
               {loading ? (
-                <>
-                  <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                  <span>Subscribing...</span>
-                </>
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
               ) : (
-                <>
-                  <span>Subscribe</span>
-                  <span>→</span>
-                </>
+                "Subscribe →"
               )}
             </button>
           </form>
-
-          {/* Trust Text */}
-          <p className="text-white/60 text-sm mt-6">
-            🔒 No spam, unsubscribe anytime. Join 5,000+ pet lovers!
-          </p>
         </div>
       </div>
     </section>

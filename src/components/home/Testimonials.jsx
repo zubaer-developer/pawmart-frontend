@@ -1,3 +1,5 @@
+import React from "react";
+
 function Testimonials() {
   const testimonials = [
     {
@@ -27,64 +29,63 @@ function Testimonials() {
   ];
 
   return (
-    <section className="py-10 bg-linear-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-amber-100 text-amber-600 rounded-full text-sm font-semibold mb-4">
-            ⭐ Testimonials
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            What Our Users Say
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Real stories from our happy community members
+    <section className="py-12 bg-white dark:bg-gray-950 transition-colors duration-300">
+      <div className="container mx-auto ">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div className="text-left">
+            <span className="text-orange-500 text-xs font-bold uppercase tracking-widest mb-2 block">
+              Success Stories
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-none">
+              Community Feedback
+            </h2>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs">
+            Real stories from our happy community members and pet owners.
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.name}
-              className="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 relative"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group relative p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 hover:shadow-md active:scale-[0.98]"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Quote Icon */}
-              <div className="absolute -top-4 right-8 w-10 h-10 bg-linear-to-r from-orange-400 to-rose-500 rounded-full flex items-center justify-center text-white text-xl">
-                "
-              </div>
-
-              {/* Rating */}
-              <div className="flex gap-1 mb-4">
+              <div className="flex gap-0.5 mb-3">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="text-amber-400 text-xl">
-                    ⭐
+                  <span key={i} className="text-amber-400 text-sm">
+                    ★
                   </span>
                 ))}
               </div>
 
-              {/* Text */}
-              <p className="text-gray-600 leading-relaxed mb-6">
+              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 italic line-clamp-3">
                 "{testimonial.text}"
               </p>
 
-              {/* User Info */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <img
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className="w-14 h-14 rounded-full object-cover ring-2 ring-gray-100"
+                  className="w-10 h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                 />
-                <div>
-                  <p className="font-bold text-gray-900">{testimonial.name}</p>
-                  <p className="text-gray-500 text-sm flex items-center gap-2">
-                    <span>📍</span> {testimonial.location}
+                <div className="min-w-0">
+                  <p className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-[10px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
                     <span className="text-orange-500">
-                      • {testimonial.pet} Owner
+                      {testimonial.pet} Owner
                     </span>
+                    <span>•</span>
+                    <span className="truncate">{testimonial.location}</span>
                   </p>
                 </div>
+              </div>
+
+              <div className="absolute top-6 right-6 text-gray-200 dark:text-gray-800 font-serif text-4xl leading-none opacity-50 group-hover:text-orange-200 transition-colors select-none">
+                ”
               </div>
             </div>
           ))}

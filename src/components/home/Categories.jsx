@@ -5,104 +5,88 @@ function Categories() {
     {
       name: "Pets",
       icon: "🐕",
-      description: "Find adorable pets for adoption",
       color: "from-orange-400 to-rose-500",
-      bgColor: "bg-orange-50",
+      bgColor: "bg-orange-50 dark:bg-orange-950/20",
       link: "/category/Pets",
       count: "50+",
     },
     {
       name: "Food",
       icon: "🍖",
-      description: "Premium quality pet food",
       color: "from-green-400 to-emerald-500",
-      bgColor: "bg-green-50",
+      bgColor: "bg-green-50 dark:bg-green-950/20",
       link: "/category/Food",
       count: "100+",
     },
     {
       name: "Accessories",
       icon: "🎾",
-      description: "Toys, beds, collars & more",
       color: "from-blue-400 to-indigo-500",
-      bgColor: "bg-blue-50",
+      bgColor: "bg-blue-50 dark:bg-blue-950/20",
       link: "/category/Accessories",
       count: "75+",
     },
     {
-      name: "Care Products",
+      name: "Care",
       icon: "💊",
-      description: "Health & grooming supplies",
       color: "from-purple-400 to-pink-500",
-      bgColor: "bg-purple-50",
+      bgColor: "bg-purple-50 dark:bg-purple-950/20",
       link: "/category/Care Products",
       count: "60+",
     },
   ];
 
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-orange-100 text-orange-600 rounded-full text-sm font-semibold mb-4">
-            🏷️ Categories
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Browse by Category
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our wide range of pets and pet products organized for your
-            convenience
-          </p>
+    <section className="py-12 bg-white dark:bg-gray-950 transition-colors">
+      <div className="container mx-auto ">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <span className="text-orange-500 text-xs font-bold uppercase tracking-widest mb-2 block">
+              Quick Browse
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-none">
+              Top Categories
+            </h2>
+          </div>
+          <Link
+            to="/pets-and-supplies"
+            className="text-sm font-bold text-orange-500 hover:underline"
+          >
+            View All Categories →
+          </Link>
         </div>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((category, index) => (
             <Link
               key={category.name}
               to={category.link}
-              className="group relative overflow-hidden rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group relative flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 hover:shadow-lg active:scale-95"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Background */}
+              {/* Icon */}
               <div
-                className={`absolute inset-0 ${category.bgColor} transition-all duration-500 group-hover:scale-105`}
-              ></div>
+                className={`shrink-0 w-12 h-12 bg-linear-to-br ${category.color} rounded-xl flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform duration-300`}
+              >
+                {category.icon}
+              </div>
 
-              {/* Gradient Overlay on Hover */}
-              <div
-                className={`absolute inset-0 bg-linear-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-              ></div>
-
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Icon */}
-                <div
-                  className={`w-20 h-20 bg-linear-to-br ${category.color} rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
-                >
-                  {category.icon}
-                </div>
-
-                {/* Text */}
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-800">
+              {/* Text Info */}
+              <div className="min-w-0">
+                <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white truncate">
                   {category.name}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {category.description}
+                <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 font-medium">
+                  {category.count} Items
                 </p>
-
-                {/* Count Badge */}
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-500">
-                    {category.count} Items
-                  </span>
-                  <span className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md group-hover:bg-gray-900 group-hover:text-white transition-all duration-300">
-                    →
-                  </span>
-                </div>
               </div>
+
+              {/* Hidden Arrow on Mobile, visible on hover */}
+              <span className="absolute right-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-orange-500 hidden md:block">
+                →
+              </span>
             </Link>
           ))}
         </div>

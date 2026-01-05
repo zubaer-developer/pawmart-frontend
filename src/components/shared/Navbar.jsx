@@ -39,7 +39,7 @@ function Navbar() {
             : "bg-white py-4"
         }`}
       >
-        <div className="container mx-auto px-4 lg:px-8">
+        <div className="container mx-auto">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
