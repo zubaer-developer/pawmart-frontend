@@ -3,11 +3,9 @@ import Categories from "../components/home/Categories";
 import RecentListings from "../components/home/RecentListings";
 import Statistics from "../components/home/Statistics";
 import WhyAdopt from "../components/home/WhyAdopt";
-import HowItWorks from "../components/home/HowItWorks";
 import PetHeroes from "../components/home/PetHeroes";
 import Testimonials from "../components/home/Testimonials";
 import Newsletter from "../components/home/Newsletter";
-import FAQ from "../components/home/FAQ";
 import useTitle from "../hooks/useTitle";
 
 function Home() {
@@ -24,16 +22,12 @@ function Home() {
       <Statistics />
       {/* Section 5: Why Adopt */}
       <WhyAdopt />
-      {/* Section 6: How It Works */}
-      <HowItWorks />
-      {/* Section 7: Pet Heroes */}
+      {/* Section 6: Pet Heroes */}
       <PetHeroes />
-      {/* Section 8: Testimonials */}
+      {/* Section 7: Testimonials */}
       <Testimonials />
-      {/* Section 9: Newsletter */}
+      {/* Section 8: Newsletter */}
       <Newsletter />
-      {/* Section 10: FAQ */}
-      <FAQ />
     </div>
   );
 }
