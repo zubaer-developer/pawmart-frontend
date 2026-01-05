@@ -1,100 +1,119 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Google Font */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* DaisyUI Theme Configuration */
+@theme {
+  --color-primary: #f97316;
+  --color-secondary: #22c55e;
+  --color-accent: #8b5cf6;
+  --font-family-sans: "Inter", system-ui, sans-serif;
+}
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
+/* Custom Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
   }
-
-  body {
-    font-family: "Inter", system-ui, sans-serif;
+  50% {
+    transform: translateY(-10px);
   }
 }
 
-@layer components {
-  /* Gradient Text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary-500 via-orange-500 to-amber-500 bg-clip-text text-transparent;
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
   }
-
-  /* Gradient Background */
-  .gradient-bg {
-    @apply bg-gradient-to-r from-primary-500 to-orange-600;
-  }
-
-  /* Glass Effect */
-  .glass-effect {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
-  }
-
-  /* Card Hover Effect */
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
-  }
-
-  /* Button Gradient */
-  .btn-gradient {
-    @apply bg-gradient-to-r from-primary-500 to-orange-600 text-white border-0 hover:from-primary-600 hover:to-orange-700 transition-all duration-300;
-  }
-
-  /* Section Title */
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold text-center mb-4;
-  }
-
-  /* Section Subtitle */
-  .section-subtitle {
-    @apply text-gray-500 text-center max-w-2xl mx-auto mb-12;
-  }
-
-  /* Input Focus Ring */
-  .input-focus {
-    @apply focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:border-primary-500 transition-all duration-200;
+  50% {
+    box-shadow: 0 0 40px rgba(249, 115, 22, 0.6);
   }
 }
 
-@layer utilities {
-  /* Animation Delays */
-  .animation-delay-200 {
-    animation-delay: 200ms;
+@keyframes loading-bar {
+  0% {
+    width: 0%;
+    margin-left: 0;
   }
-  .animation-delay-400 {
-    animation-delay: 400ms;
+  50% {
+    width: 60%;
+    margin-left: 20%;
   }
-  .animation-delay-600 {
-    animation-delay: 600ms;
+  100% {
+    width: 0%;
+    margin-left: 100%;
   }
+}
 
-  /* Floating Animation */
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
+/* Utility Classes */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
 
-  /* Pulse Glow */
-  @keyframes pulse-glow {
-    0%,
-    100% {
-      box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
-    }
-    50% {
-      box-shadow: 0 0 40px rgba(249, 115, 22, 0.6);
-    }
-  }
-  .animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
+.animate-float-delay-1 {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 200ms;
+}
+
+.animate-float-delay-2 {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 400ms;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.5s ease-in-out infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(to right, #f97316, #f59e0b, #eab308);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Card Hover Effect */
+.card-hover {
+  transition: all 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient Backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.gradient-dark {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Body Font */
+body {
+  font-family: "Inter", system-ui, sans-serif;
 }
