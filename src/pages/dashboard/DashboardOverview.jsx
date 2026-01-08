@@ -1,252 +1,235 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  AreaChart,
+  Area,
+} from "recharts";
 import useAuth from "../../hooks/useAuth";
+import useAdmin from "../../hooks/useAdmin";
 import useTitle from "../../hooks/useTitle";
 
 function DashboardOverview() {
   useTitle("Dashboard");
-
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const [stats, setStats] = useState({
     totalListings: 0,
     totalOrders: 0,
     pendingOrders: 0,
-    completedOrders: 0,
   });
-  const [recentOrders, setRecentOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.email) {
-      fetchStats();
-    }
-  }, [user]);
-
-  const fetchStats = async () => {
-    try {
-      setLoading(true);
-
-      const listingsRes = await fetch("http://localhost:5000/listings");
-      const listingsData = await listingsRes.json();
-      const myListings =
-        listingsData.data?.filter((listing) => listing.email === user.email) ||
-        [];
-
-      const ordersRes = await fetch(
-        `http://localhost:5000/orders/user/${user.email}`
-      );
-      const ordersData = await ordersRes.json();
-      const myOrders = ordersData.data || [];
-
-      setStats({
-        totalListings: myListings.length,
-        totalOrders: myOrders.length,
-        pendingOrders: myOrders.filter((o) => o.status === "pending").length,
-        completedOrders: myOrders.filter((o) => o.status === "completed")
-          .length,
-      });
-
-      setRecentOrders(myOrders.slice(0, 5));
-    } catch (err) {
-      console.log("Error fetching stats:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const statsCards = [
-    {
-      title: "My Listings",
-      value: stats.totalListings,
-      icon: "📋",
-      color: "from-orange-400 to-rose-500",
-      link: "/dashboard/my-listings",
-    },
-    {
-      title: "Total Orders",
-      value: stats.totalOrders,
-      icon: "🛒",
-      color: "from-blue-400 to-indigo-500",
-      link: "/dashboard/my-orders",
-    },
-    {
-      title: "Pending",
-      value: stats.pendingOrders,
-      icon: "⏳",
-      color: "from-amber-400 to-orange-500",
-      link: "/dashboard/my-orders",
-    },
-    {
-      title: "Completed",
-      value: stats.completedOrders,
-      icon: "✅",
-      color: "from-green-400 to-emerald-500",
-      link: "/dashboard/my-orders",
-    },
+  // Dummy Data for Charts
+  const data = [
+    { name: "Jan", uv: 40, pv: 24 },
+    { name: "Feb", uv: 30, pv: 13 },
+    { name: "Mar", uv: 98, pv: 20 },
+    { name: "Apr", uv: 39, pv: 27 },
+    { name: "May", uv: 48, pv: 18 },
+    { name: "Jun", uv: 23, pv: 38 },
+    { name: "Jul", uv: 34, pv: 43 },
   ];
 
+  useEffect(() => {
+    setStats({ totalListings: 12, totalOrders: 5, pendingOrders: 2 });
+  }, []);
+
+  const PRIMARY_COLOR = "#f97316";
+  const SECONDARY_COLOR = "#22c55e";
+  const MUTED_COLOR = "#e5e7eb";
   return (
-    <div>
-      {/* Welcome Section */}
-      <div className="bg-linear-to-r from-orange-500 to-rose-500 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 text-[150px] opacity-10 -mt-10 -mr-10">
-          🐾
-        </div>
-        <div className="relative z-10">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">
-            Welcome back, {user?.displayName || "User"}!
-          </h1>
-          <p className="text-white/80">
-            Here's what's happening with your PawMart account today.
+    <div className="max-w-[1600px] mx-auto">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-base-content">Overview</h1>
+          <p className="text-base-content/60 mt-1">
+            Hi {user?.displayName?.split(" ")[0]}, here's what's happening.
           </p>
         </div>
+        <div className="hidden sm:flex gap-4">
+          <span className="px-4 py-2 bg-base-100 rounded-full text-sm font-medium shadow-sm text-base-content/70 border border-base-300">
+            📅 Last 30 Days
+          </span>
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {statsCards.map((card) => (
-          <Link
-            key={card.title}
-            to={card.link}
-            className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div
-                className={`w-14 h-14 bg-linear-to-br ${card.color} rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}
-              >
-                {card.icon}
-              </div>
-              <span className="text-gray-400 group-hover:text-orange-500 transition-colors">
-                →
-              </span>
+      {/* STATS CARDS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Card 1 */}
+        <div className="bg-base-100 p-8 rounded-[2.5rem] shadow-sm border border-base-200 hover:shadow-lg transition-all">
+          <div className="flex items-start justify-between mb-6">
+            <div className="p-4 bg-orange-100 text-orange-600 rounded-2xl text-2xl">
+              {isAdmin ? "👥" : "📋"}
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-1">
-              {loading ? "..." : card.value}
-            </h3>
-            <p className="text-gray-500">{card.title}</p>
-          </Link>
-        ))}
-      </div>
-
-      {/* Quick Actions & Recent Orders */}
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Quick Actions */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <span>⚡</span> Quick Actions
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            <Link
-              to="/dashboard/add-listing"
-              className="p-4 bg-linear-to-br from-orange-50 to-rose-50 rounded-xl hover:shadow-lg transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 bg-linear-to-br from-orange-400 to-rose-500 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-                ➕
-              </div>
-              <h3 className="font-semibold text-gray-800">Add Listing</h3>
-              <p className="text-sm text-gray-500">Create new pet or product</p>
-            </Link>
-
-            <Link
-              to="/pets-and-supplies"
-              className="p-4 bg-linear-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-lg transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 bg-linear-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-                🔍
-              </div>
-              <h3 className="font-semibold text-gray-800">Browse</h3>
-              <p className="text-sm text-gray-500">Find pets & supplies</p>
-            </Link>
-
-            <Link
-              to="/dashboard/my-orders"
-              className="p-4 bg-linear-to-br from-green-50 to-emerald-50 rounded-xl hover:shadow-lg transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 bg-linear-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-                📦
-              </div>
-              <h3 className="font-semibold text-gray-800">My Orders</h3>
-              <p className="text-sm text-gray-500">Track your orders</p>
-            </Link>
-
-            <Link
-              to="/dashboard/profile"
-              className="p-4 bg-linear-to-br from-purple-50 to-pink-50 rounded-xl hover:shadow-lg transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 bg-linear-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-                👤
-              </div>
-              <h3 className="font-semibold text-gray-800">Profile</h3>
-              <p className="text-sm text-gray-500">Update your info</p>
-            </Link>
+            <span className="text-xs font-bold text-base-content/40 tracking-wider">
+              {isAdmin ? "USERS" : "LISTINGS"}
+            </span>
+          </div>
+          <h3 className="text-4xl font-black text-base-content mb-2">
+            {isAdmin ? "430" : stats.totalListings}
+          </h3>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-base-content/60">
+              {isAdmin ? "Total Registered" : "Active Listings"}
+            </span>
+            <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs font-bold">
+              +12%
+            </span>
           </div>
         </div>
 
-        {/* Recent Orders */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <span>🕐</span> Recent Orders
-            </h2>
-            <Link
-              to="/dashboard/my-orders"
-              className="text-orange-500 text-sm font-medium hover:underline"
-            >
-              View All →
-            </Link>
+        {/* Card 2 */}
+        <div className="bg-base-100 p-8 rounded-[2.5rem] shadow-sm border border-base-200 hover:shadow-lg transition-all">
+          <div className="flex items-start justify-between mb-6">
+            <div className="p-4 bg-green-100 text-green-600 rounded-2xl text-2xl">
+              🛒
+            </div>
+            <span className="text-xs font-bold text-base-content/40 tracking-wider">
+              ORDERS
+            </span>
+          </div>
+          <h3 className="text-4xl font-black text-base-content mb-2">
+            {isAdmin ? "1,204" : stats.totalOrders}
+          </h3>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-base-content/60">Total Orders</span>
+            <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs font-bold">
+              +5%
+            </span>
+          </div>
+        </div>
+
+        {/* Card 3 */}
+        <div className="bg-base-100 p-8 rounded-[2.5rem] shadow-sm border border-base-200 hover:shadow-lg transition-all">
+          <div className="flex items-start justify-between mb-6">
+            <div className="p-4 bg-purple-100 text-purple-600 rounded-2xl text-2xl">
+              ⏳
+            </div>
+            <span className="text-xs font-bold text-base-content/40 tracking-wider">
+              PENDING
+            </span>
+          </div>
+          <h3 className="text-4xl font-black text-base-content mb-2">
+            {stats.pendingOrders}
+          </h3>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-base-content/60">Needs Action</span>
+            {stats.pendingOrders > 0 ? (
+              <span className="px-2 py-1 bg-orange-100 text-orange-600 rounded-lg text-xs font-bold">
+                Action Req.
+              </span>
+            ) : (
+              <span className="px-2 py-1 bg-base-200 text-base-content/50 rounded-lg text-xs font-bold">
+                All Good
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* CHARTS ROW */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Chart 1: Bar Chart (Orange Theme) */}
+        <div className="bg-base-100 p-8 rounded-[2.5rem] shadow-sm border border-base-200">
+          <div className="flex justify-between items-center mb-8">
+            <h3 className="text-xl font-bold text-base-content">
+              {isAdmin ? "New Users" : "Profile Views"}
+            </h3>
+            <select className="bg-base-200 border-none rounded-lg text-xs px-3 py-2 outline-none text-base-content/70 cursor-pointer">
+              <option>Last 6 months</option>
+            </select>
           </div>
 
-          {loading ? (
-            <div className="space-y-4">
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="animate-pulse flex items-center gap-4 p-4 bg-gray-50 rounded-xl"
-                >
-                  <div className="w-12 h-12 bg-gray-200 rounded-xl"></div>
-                  <div className="flex-1">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : recentOrders.length === 0 ? (
-            <div className="text-center py-8">
-              <span className="text-5xl mb-4 block">📭</span>
-              <p className="text-gray-500">No orders yet</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {recentOrders.map((order) => (
-                <div
-                  key={order._id}
-                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-                >
-                  <div className="w-12 h-12 bg-linear-to-br from-orange-100 to-rose-100 rounded-xl flex items-center justify-center text-xl">
-                    {order.category === "Pets" ? "🐾" : "📦"}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-800 truncate">
-                      {order.productName}
-                    </h4>
-                    <p className="text-sm text-gray-500">{order.date}</p>
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      order.status === "completed"
-                        ? "bg-green-100 text-green-600"
-                        : order.status === "cancelled"
-                        ? "bg-red-100 text-red-600"
-                        : "bg-amber-100 text-amber-600"
-                    }`}
-                  >
-                    {order.status || "pending"}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data}>
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                  dy={10}
+                />
+                <Tooltip
+                  cursor={{ fill: "transparent" }}
+                  contentStyle={{
+                    borderRadius: "16px",
+                    border: "none",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                    backgroundColor: "var(--fallback-b1,oklch(var(--b1)/1))",
+                    color: "var(--fallback-bc,oklch(var(--bc)/1))",
+                  }}
+                />
+                <Bar dataKey="uv" radius={[10, 10, 10, 10]} barSize={40}>
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={index === 2 ? PRIMARY_COLOR : "#E5E7EB"} // Highlight March in Orange
+                      className={index !== 2 ? "dark:fill-gray-700" : ""} // Dark mode fix for inactive bars
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Chart 2: Area Chart (Green Theme) */}
+        <div className="bg-base-100 p-8 rounded-[2.5rem] shadow-sm border border-base-200">
+          <div className="flex justify-between items-center mb-8">
+            <h3 className="text-xl font-bold text-base-content">
+              Activity Trends
+            </h3>
+          </div>
+
+          <div className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data}>
+                <defs>
+                  <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor={SECONDARY_COLOR}
+                      stopOpacity={0.2}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor={SECONDARY_COLOR}
+                      stopOpacity={0}
+                    />
+                  </linearGradient>
+                </defs>
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                  dy={10}
+                />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: "16px",
+                    border: "none",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                    backgroundColor: "var(--fallback-b1,oklch(var(--b1)/1))",
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="pv"
+                  stroke={SECONDARY_COLOR}
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorPv)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

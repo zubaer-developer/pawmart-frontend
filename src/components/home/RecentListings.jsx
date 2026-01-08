@@ -33,7 +33,7 @@ function RecentListings() {
   };
 
   return (
-    <section className="py-12 bg-white dark:bg-gray-950 transition-colors">
+    <section className="py-12 bg-base-100 dark:bg-gray-950 transition-colors">
       <div className="container mx-auto ">
         {/* Header */}
         <div className="flex items-end justify-between mb-8">
@@ -41,7 +41,7 @@ function RecentListings() {
             <span className="text-orange-500 text-xs font-bold uppercase tracking-widest mb-1 block">
               New Arrivals
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white">
+            <h2 className="text-2xl md:text-3xl font-black text-base-content dark:text-white">
               Recent Listings
             </h2>
           </div>
@@ -59,7 +59,7 @@ function RecentListings() {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="h-64 bg-gray-100 dark:bg-gray-900 rounded-2xl animate-pulse"
+                className="h-64 bg-base-300 dark:bg-gray-900 rounded-2xl animate-pulse"
               ></div>
             ))}
           </div>
@@ -73,7 +73,7 @@ function RecentListings() {
             {listings.map((listing, index) => (
               <div
                 key={listing._id}
-                className="group bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 shadow-sm hover:shadow-md"
+                className="group bg-base-200 dark:bg-gray-900 rounded-2xl overflow-hidden border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 shadow-sm hover:shadow-md"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 {/* Image Container */}
@@ -105,7 +105,7 @@ function RecentListings() {
 
                 {/* Content */}
                 <div className="p-3">
-                  <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white truncate mb-1">
+                  <h3 className="text-sm md:text-base font-bold text-base-content dark:text-white truncate mb-1">
                     {listing.name}
                   </h3>
 
@@ -116,7 +116,7 @@ function RecentListings() {
 
                   <Link
                     to={`/listing/${listing._id}`}
-                    className="block w-full text-center py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-bold rounded-xl group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all active:scale-95"
+                    className="block w-full text-center py-2 bg-base-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-bold rounded-xl group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all active:scale-95"
                   >
                     Details
                   </Link>

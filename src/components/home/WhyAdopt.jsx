@@ -29,11 +29,11 @@ function WhyAdopt() {
   ];
 
   return (
-    <section className="py-12  bg-white dark:bg-gray-950 transition-colors duration-300 relative">
+    <section className="py-12  bg-base-100 dark:bg-gray-950 transition-colors duration-300 relative">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div className="text-left">
-            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-none mb-3">
+            <h2 className="text-2xl md:text-3xl font-black text-base-content dark:text-white leading-none mb-3">
               Why Adopt from <span className="text-orange-500">PawMart?</span>
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xl font-medium">
@@ -48,7 +48,7 @@ function WhyAdopt() {
           {reasons.map((reason, index) => (
             <div
               key={reason.title}
-              className="group relative p-6 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 hover:shadow-lg active:scale-95"
+              className="group relative p-6 rounded-3xl bg-base-200 dark:bg-gray-900 border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 hover:shadow-lg active:scale-95"
             >
               <div className="relative z-10 flex flex-col items-start text-left">
                 <div
@@ -57,11 +57,11 @@ function WhyAdopt() {
                   {reason.icon}
                 </div>
 
-                <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-500 transition-colors">
+                <h3 className="text-base font-bold text-base-content dark:text-white mb-2 group-hover:text-orange-500 transition-colors">
                   {reason.title}
                 </h3>
 
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                <p className="text-xs text-base-content/70 dark:text-gray-400 leading-relaxed line-clamp-2">
                   {reason.description}
                 </p>
               </div>

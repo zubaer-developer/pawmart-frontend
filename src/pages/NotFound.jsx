@@ -33,7 +33,7 @@ function NotFound() {
           </Link>
           <Link
             to="/pets-and-supplies"
-            className="btn btn-lg btn-outline text-white border-white/30 hover:bg-white/10 hover:border-white/50 gap-2"
+            className="btn btn-lg btn-outline text-white border-white/30 hover:bg-base-100/10 hover:border-white/50 gap-2"
           >
             <span>🐾</span> Browse Pets
           </Link>

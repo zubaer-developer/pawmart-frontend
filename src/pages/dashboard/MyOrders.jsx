@@ -87,7 +87,7 @@ function MyOrders() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Orders</h1>
+          <h1 className="text-2xl font-bold text-base-content">My Orders</h1>
           <p className="text-gray-500">
             Track your adoption requests and purchases
           </p>
@@ -106,7 +106,7 @@ function MyOrders() {
       {loading ? (
         <div className="space-y-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl p-6 animate-pulse">
+            <div key={i} className="bg-base-100 rounded-2xl p-6 animate-pulse">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gray-200 rounded-xl"></div>
                 <div className="flex-1">
@@ -118,7 +118,7 @@ function MyOrders() {
           ))}
         </div>
       ) : orders.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center">
+        <div className="bg-base-100 rounded-3xl p-12 text-center">
           <span className="text-6xl mb-4 block">🛒</span>
           <h3 className="text-xl font-bold text-gray-800 mb-2">
             No Orders Yet
@@ -138,7 +138,7 @@ function MyOrders() {
           {orders.map((order, index) => (
             <div
               key={order._id}
-              className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all"
+              className="bg-base-100 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all"
             >
               <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                 {/* Order Number */}
@@ -148,7 +148,7 @@ function MyOrders() {
 
                 {/* Product Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">
+                  <h3 className="text-lg font-bold text-base-content mb-1">
                     {order.productName}
                   </h3>
                   <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
@@ -166,7 +166,7 @@ function MyOrders() {
 
                 {/* Price & Quantity */}
                 <div className="text-center shrink-0">
-                  <p className="text-xl font-bold text-gray-900">
+                  <p className="text-xl font-bold text-base-content">
                     {order.price === 0 ? "Free" : `৳${order.price}`}
                   </p>
                   <p className="text-sm text-gray-500">Qty: {order.quantity}</p>

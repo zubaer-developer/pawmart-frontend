@@ -1,7 +1,8 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Navbar from "../components/shared/Navbar";
 import Footer from "../components/shared/Footer";
+import ThemeToggle from "../components/shared/ThemeToggle";
 import Loading from "../components/Loading";
 
 function MainLayout() {
@@ -12,17 +13,17 @@ function MainLayout() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Navbar */}
+    <div className="min-h-screen flex flex-col bg-base-200 transition-colors duration-300">
       <Navbar />
 
-      {/* Main Content */}
-      <main className="flex-grow">
+      <main className="grow">
         <Outlet />
       </main>
 
-      {/* Footer */}
       <Footer />
+
+      {/* Add Toggle Here */}
+      <ThemeToggle />
     </div>
   );
 }

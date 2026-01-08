@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import Lenis from "lenis"; // Import Lenis
 import Hero from "../components/home/Hero";
 import Categories from "../components/home/Categories";
 import RecentListings from "../components/home/RecentListings";
@@ -10,8 +12,37 @@ import useTitle from "../hooks/useTitle";
 
 function Home() {
   useTitle("Home");
+
+  // Setup Lenis Smooth Scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2, // Scroll duration (higher = smoother)
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+      direction: "vertical",
+      gestureDirection: "vertical",
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // Cleanup when leaving the page
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
-    <div>
+    <div className="overflow-hidden">
+      {" "}
+      {/* Optional: prevents unwanted scrollbars during animation */}
       {/* Section 1: Hero Banner */}
       <Hero />
       {/* Section 2: Categories */}

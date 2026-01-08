@@ -64,7 +64,7 @@ function MyListings() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Listings</h1>
+          <h1 className="text-2xl font-bold text-base-content">My Listings</h1>
           <p className="text-gray-500">Manage your pets and products</p>
         </div>
         <Link
@@ -79,7 +79,7 @@ function MyListings() {
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl p-4 animate-pulse">
+            <div key={i} className="bg-base-100 rounded-2xl p-4 animate-pulse">
               <div className="w-full h-40 bg-gray-200 rounded-xl mb-4"></div>
               <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
               <div className="h-4 bg-gray-200 rounded w-1/2"></div>
@@ -87,7 +87,7 @@ function MyListings() {
           ))}
         </div>
       ) : listings.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center">
+        <div className="bg-base-100 rounded-3xl p-12 text-center">
           <span className="text-6xl mb-4 block">📋</span>
           <h3 className="text-xl font-bold text-gray-800 mb-2">
             No Listings Yet
@@ -107,7 +107,7 @@ function MyListings() {
           {listings.map((listing) => (
             <div
               key={listing._id}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
+              className="bg-base-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
             >
               {/* Image */}
               <div className="relative h-48 overflow-hidden">
@@ -117,7 +117,7 @@ function MyListings() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-3 left-3">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-medium rounded-full">
+                  <span className="px-3 py-1 bg-base-100/90 backdrop-blur-sm text-gray-800 text-sm font-medium rounded-full">
                     {listing.category}
                   </span>
                 </div>
@@ -134,7 +134,7 @@ function MyListings() {
 
               {/* Content */}
               <div className="p-5">
-                <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">
+                <h3 className="text-lg font-bold text-base-content mb-2 truncate">
                   {listing.name}
                 </h3>
                 <p className="text-gray-500 text-sm flex items-center gap-2 mb-4">
@@ -145,13 +145,13 @@ function MyListings() {
                 <div className="flex gap-2">
                   <Link
                     to={`/dashboard/update-listing/${listing._id}`}
-                    className="flex-1 py-2 bg-gray-100 text-gray-700 font-medium rounded-xl text-center hover:bg-orange-500 hover:text-white transition-colors"
+                    className="flex-1 py-2 bg-base-300 text-gray-700 font-medium rounded-xl text-center hover:bg-orange-500 hover:text-white transition-colors"
                   >
                     ✏️ Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(listing._id)}
-                    className="flex-1 py-2 bg-gray-100 text-red-500 font-medium rounded-xl hover:bg-red-500 hover:text-white transition-colors"
+                    className="flex-1 py-2 bg-base-300 text-red-500 font-medium rounded-xl hover:bg-red-500 hover:text-white transition-colors"
                   >
                     🗑️ Delete
                   </button>

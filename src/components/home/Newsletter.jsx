@@ -47,7 +47,7 @@ function Newsletter() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
-                className="w-full h-12 pl-4 pr-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:bg-white focus:text-gray-900 transition-all text-sm"
+                className="w-full h-12 pl-4 pr-4 bg-base-100/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:bg-base-100 focus:text-base-content transition-all text-sm"
                 required
               />
             </div>

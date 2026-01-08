@@ -71,7 +71,7 @@ function Hero() {
                       </button>
                     </Link>
                     <Link to="/register">
-                      <button className="px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-bold rounded-lg transition-all active:scale-95 text-sm">
+                      <button className="px-5 py-2.5 bg-base-100/10 hover:bg-base-100/20 backdrop-blur-md text-white border border-white/20 font-bold rounded-lg transition-all active:scale-95 text-sm">
                         Join Us
                       </button>
                     </Link>

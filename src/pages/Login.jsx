@@ -71,36 +71,38 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 p-4 transition-colors duration-300">
+      <div className="w-full max-w-md bg-base-100 p-6 rounded-3xl shadow-sm border border-base-200">
         {/* Logo Section*/}
         <div className="text-center mb-4">
           <Link to="/" className="inline-block mb-1">
-            <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-2xl shadow-md mx-auto">
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center text-2xl shadow-md mx-auto text-white">
               🐾
             </div>
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">Welcome Back!</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-base-content">
+            Welcome Back!
+          </h1>
+          <p className="text-sm text-base-content/60">
             Sign in to continue to PawMart
           </p>
         </div>
 
         {/* Demo Buttons*/}
-        <div className="mb-4 p-3 bg-linear-to-r from-orange-50 to-amber-50 rounded-xl border border-orange-100">
+        <div className="mb-4 p-3 bg-base-200/50 rounded-xl border border-base-300">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-orange-600 uppercase tracking-wider whitespace-nowrap">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider whitespace-nowrap">
               Demo:
             </span>
             <button
               onClick={fillDemoUser}
-              className="flex-1 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-orange-400 transition-all flex items-center justify-center gap-1"
+              className="flex-1 py-1.5 bg-base-100 border border-base-300 rounded-lg text-sm font-medium text-base-content hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-1"
             >
               👤 User
             </button>
             <button
               onClick={fillDemoAdmin}
-              className="flex-1 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-orange-400 transition-all flex items-center justify-center gap-1"
+              className="flex-1 py-1.5 bg-base-100 border border-base-300 rounded-lg text-sm font-medium text-base-content hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-1"
             >
               👑 Admin
             </button>
@@ -110,41 +112,41 @@ function Login() {
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+            <label className="block text-xs font-bold text-base-content/70 mb-1 ml-1 uppercase">
               Email Address
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg opacity-70">
                 📧
               </span>
               <input
                 type="email"
                 name="email"
                 placeholder="Enter your email"
-                className="w-full pl-12 pr-4 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+                className="w-full pl-12 pr-4 py-2.5 bg-base-200 border-2 border-base-200 rounded-xl focus:border-primary focus:bg-base-100 transition-all outline-none text-sm text-base-content placeholder:text-base-content/40"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-600 mb-1 ml-1 uppercase">
+            <label className="block text-xs font-bold text-base-content/70 mb-1 ml-1 uppercase">
               Password
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg opacity-70">
                 🔒
               </span>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
-                className="w-full pl-12 pr-12 py-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none text-sm"
+                className="w-full pl-12 pr-12 py-2.5 bg-base-200 border-2 border-base-200 rounded-xl focus:border-primary focus:bg-base-100 transition-all outline-none text-sm text-base-content placeholder:text-base-content/40"
                 required
               />
               <button
                 type="button"
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-lg text-gray-400"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-lg text-base-content/50 hover:text-base-content"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? "🙈" : "👁️"}
@@ -155,7 +157,7 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 mt-2 gradient-primary text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-70"
+            className="w-full py-3 mt-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-70"
           >
             {loading ? "Signing in..." : "Sign In →"}
           </button>
@@ -163,18 +165,18 @@ function Login() {
 
         {/* Divider */}
         <div className="flex items-center gap-3 my-4">
-          <div className="flex-1 h-px bg-gray-100"></div>
-          <span className="text-[10px] text-gray-400 font-bold uppercase">
+          <div className="flex-1 h-px bg-base-300"></div>
+          <span className="text-[10px] text-base-content/40 font-bold uppercase">
             OR
           </span>
-          <div className="flex-1 h-px bg-gray-100"></div>
+          <div className="flex-1 h-px bg-base-300"></div>
         </div>
 
         {/* Google Button */}
         <button
           onClick={handleGoogleSignIn}
           disabled={loading}
-          className="w-full py-2.5 bg-white border border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 text-sm"
+          className="w-full py-2.5 bg-base-100 border border-base-300 rounded-xl font-semibold text-base-content hover:bg-base-200 transition-all flex items-center justify-center gap-2 text-sm"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -197,11 +199,11 @@ function Login() {
           Continue with Google
         </button>
 
-        <p className="text-center mt-4 text-sm text-gray-600">
+        <p className="text-center mt-4 text-sm text-base-content/70">
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="text-orange-500 font-bold hover:underline"
+            className="text-primary font-bold hover:underline"
           >
             Create one
           </Link>

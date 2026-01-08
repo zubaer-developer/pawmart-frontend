@@ -39,7 +39,7 @@ function PetsAndSupplies() {
     <div className="container mx-auto px-4 lg:px-8 py-12">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl font-bold text-base-content mb-4">
           Pets & Supplies
         </h1>
         <p className="text-gray-500">
@@ -48,7 +48,7 @@ function PetsAndSupplies() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-3xl shadow-sm p-6 mb-12 flex flex-col lg:flex-row gap-4 items-center">
+      <div className="bg-base-100 rounded-3xl shadow-sm p-6 mb-12 flex flex-col lg:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
             🔍
@@ -58,14 +58,14 @@ function PetsAndSupplies() {
             placeholder="Search by name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+            className="w-full pl-12 pr-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
           />
         </div>
 
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full lg:w-48 px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+          className="w-full lg:w-48 px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
         >
           <option value="">All Categories</option>
           <option value="Pets">Pets</option>
@@ -77,7 +77,7 @@ function PetsAndSupplies() {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="w-full lg:w-48 px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+          className="w-full lg:w-48 px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
         >
           <option value="">Sort By</option>
           <option value="price-low">Price: Low to High</option>
@@ -110,7 +110,7 @@ function PetsAndSupplies() {
           {filteredListings.map((listing) => (
             <div
               key={listing._id}
-              className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+              className="group bg-base-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
@@ -118,7 +118,7 @@ function PetsAndSupplies() {
                   alt={listing.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-gray-800">
+                <div className="absolute top-4 left-4 bg-base-100/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-gray-800">
                   {listing.category}
                 </div>
                 {listing.price === 0 && (
@@ -128,7 +128,7 @@ function PetsAndSupplies() {
                 )}
               </div>
               <div className="p-6">
-                <h3 className="font-bold text-lg text-gray-900 mb-2 truncate">
+                <h3 className="font-bold text-lg text-base-content mb-2 truncate">
                   {listing.name}
                 </h3>
                 <div className="flex items-center justify-between mb-4">

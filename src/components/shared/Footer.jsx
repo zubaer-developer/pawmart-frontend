@@ -24,7 +24,7 @@ function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-10 h-10 bg-base-100/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
                 📘
               </a>
@@ -32,7 +32,7 @@ function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-10 h-10 bg-base-100/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
                 🐦
               </a>
@@ -40,7 +40,7 @@ function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-10 h-10 bg-base-100/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
                 📷
               </a>
@@ -48,7 +48,7 @@ function Footer() {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-10 h-10 bg-base-100/10 rounded-xl flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
                 ▶️
               </a>
@@ -148,15 +148,15 @@ function Footer() {
             <ul className="space-y-3 text-gray-400">
               <li className="flex items-start gap-3">
                 <span>📍</span>
-                <span>123 Pet Street, Dhanmondi, Dhaka</span>
+                <span>Dhaka, Bangladesh</span>
               </li>
               <li className="flex items-center gap-3">
                 <span>📞</span>
-                <span>+880 1712-345678</span>
+                <span>+880 1738-305766</span>
               </li>
               <li className="flex items-center gap-3">
                 <span>📧</span>
-                <span>support@pawmart.com</span>
+                <span>zubaer.developer@gmail.com</span>
               </li>
             </ul>
           </div>

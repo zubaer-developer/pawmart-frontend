@@ -26,12 +26,12 @@ function Profile() {
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
+        <h1 className="text-2xl font-bold text-base-content">My Profile</h1>
         <p className="text-gray-500">Manage your account information</p>
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+      <div className="bg-base-100 rounded-3xl shadow-sm overflow-hidden">
         {/* Cover */}
         <div className="h-32 bg-linear-to-r from-orange-400 via-rose-500 to-pink-500 relative">
           <div className="absolute inset-0 opacity-20">
@@ -44,7 +44,7 @@ function Profile() {
         <div className="px-8 pb-8">
           <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 -mt-16 mb-8">
             <div className="relative">
-              <div className="w-32 h-32 rounded-2xl overflow-hidden ring-4 ring-white shadow-xl bg-white">
+              <div className="w-32 h-32 rounded-2xl overflow-hidden ring-4 ring-white shadow-xl bg-base-100">
                 <img
                   src={user?.photoURL || "https://i.pravatar.cc/150?img=1"}
                   alt={user?.displayName || "User"}
@@ -55,7 +55,7 @@ function Profile() {
             </div>
 
             <div className="text-center sm:text-left pb-2">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-2xl font-bold text-base-content">
                 {user?.displayName || "User Name"}
               </h2>
               <p className="text-gray-500">{user?.email}</p>
@@ -67,9 +67,9 @@ function Profile() {
             {profileInfo.map((info) => (
               <div
                 key={info.label}
-                className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-4 p-4 bg-base-200 rounded-2xl hover:bg-base-300 transition-colors"
               >
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm">
+                <div className="w-12 h-12 bg-base-100 rounded-xl flex items-center justify-center text-xl shadow-sm">
                   {info.icon}
                 </div>
                 <div>

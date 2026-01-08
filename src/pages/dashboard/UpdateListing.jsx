@@ -84,7 +84,7 @@ function UpdateListing() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-3xl p-8 animate-pulse">
+        <div className="bg-base-100 rounded-3xl p-8 animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
           <div className="space-y-6">
             {[...Array(6)].map((_, i) => (
@@ -104,18 +104,20 @@ function UpdateListing() {
       <div className="flex items-center gap-4 mb-8">
         <Link
           to="/dashboard/my-listings"
-          className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-colors"
+          className="w-10 h-10 bg-base-300 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-colors"
         >
           ←
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Update Listing</h1>
+          <h1 className="text-2xl font-bold text-base-content">
+            Update Listing
+          </h1>
           <p className="text-gray-500">Edit your pet or product details</p>
         </div>
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-3xl shadow-sm p-8">
+      <div className="bg-base-100 rounded-3xl shadow-sm p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name & Category */}
           <div className="grid md:grid-cols-2 gap-6">
@@ -128,7 +130,7 @@ function UpdateListing() {
                 name="name"
                 required
                 defaultValue={listing.name}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
             <div>
@@ -139,7 +141,7 @@ function UpdateListing() {
                 name="category"
                 required
                 defaultValue={listing.category}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               >
                 <option value="Pets">🐾 Pets</option>
                 <option value="Food">🍖 Food</option>
@@ -161,7 +163,7 @@ function UpdateListing() {
                 required
                 min="0"
                 defaultValue={listing.price}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
             <div>
@@ -173,7 +175,7 @@ function UpdateListing() {
                 name="location"
                 required
                 defaultValue={listing.location}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
           </div>
@@ -189,7 +191,7 @@ function UpdateListing() {
                 name="image"
                 required
                 defaultValue={listing.image}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
             <div>
@@ -201,7 +203,7 @@ function UpdateListing() {
                 name="date"
                 required
                 defaultValue={listing.date}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
           </div>
@@ -216,7 +218,7 @@ function UpdateListing() {
               required
               rows="4"
               defaultValue={listing.description}
-              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none resize-none"
+              className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none resize-none"
             ></textarea>
           </div>
 
@@ -238,7 +240,7 @@ function UpdateListing() {
             </button>
             <Link
               to="/dashboard/my-listings"
-              className="px-8 py-4 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors"
+              className="px-8 py-4 bg-base-300 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors"
             >
               Cancel
             </Link>

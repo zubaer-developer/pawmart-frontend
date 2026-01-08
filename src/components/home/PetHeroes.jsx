@@ -37,14 +37,14 @@ function PetHeroes() {
   ];
 
   return (
-    <section className="py-12 bg-white dark:bg-gray-950 transition-colors duration-300">
+    <section className="py-12 bg-base-100 dark:bg-gray-950 transition-colors duration-300">
       <div className="container mx-auto ">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div className="text-left">
             <span className="text-purple-500 text-xs font-bold uppercase tracking-widest mb-2 block">
               Community Heroes
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-none">
+            <h2 className="text-2xl md:text-3xl font-black text-base-content dark:text-white leading-none">
               Meet Our Pet Heroes
             </h2>
           </div>
@@ -57,7 +57,7 @@ function PetHeroes() {
           {heroes.map((hero, index) => (
             <div
               key={hero.name}
-              className="group relative p-5 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-transparent hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-300 hover:shadow-md active:scale-95"
+              className="group relative p-5 rounded-2xl bg-base-200 dark:bg-gray-900 border border-transparent hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-300 hover:shadow-md active:scale-95"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div className="flex flex-col items-center text-center">
@@ -72,14 +72,14 @@ function PetHeroes() {
                   </div>
                 </div>
 
-                <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-0.5 truncate w-full">
+                <h3 className="font-bold text-base-content dark:text-white text-sm mb-0.5 truncate w-full">
                   {hero.name}
                 </h3>
                 <p className="text-purple-500 text-[10px] font-bold uppercase tracking-tighter mb-2">
                   {hero.role}
                 </p>
 
-                <p className="text-gray-600 dark:text-gray-400 text-xs italic leading-snug line-clamp-2">
+                <p className="text-base-content/70 dark:text-gray-400 text-xs italic leading-snug line-clamp-2">
                   "{hero.quote}"
                 </p>
               </div>

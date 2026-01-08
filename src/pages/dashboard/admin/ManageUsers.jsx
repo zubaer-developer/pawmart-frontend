@@ -57,24 +57,30 @@ function ManageUsers() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Manage Users</h1>
+      <h1 className="text-2xl font-bold text-base-content mb-6">
+        Manage Users
+      </h1>
 
-      <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+      <div className="bg-base-100 rounded-3xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-gray-50 border-b border-gray-100">
+            <thead className="bg-base-200 border-b border-gray-100">
               <tr>
-                <th className="p-6 font-semibold text-gray-600">User</th>
-                <th className="p-6 font-semibold text-gray-600">Role</th>
-                <th className="p-6 font-semibold text-gray-600">Joined</th>
-                <th className="p-6 font-semibold text-gray-600">Actions</th>
+                <th className="p-6 font-semibold text-base-content/70">User</th>
+                <th className="p-6 font-semibold text-base-content/70">Role</th>
+                <th className="p-6 font-semibold text-base-content/70">
+                  Joined
+                </th>
+                <th className="p-6 font-semibold text-base-content/70">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {users.map((user) => (
                 <tr
                   key={user._id}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-base-200 transition-colors"
                 >
                   <td className="p-6">
                     <div className="flex items-center gap-4">
@@ -84,7 +90,9 @@ function ManageUsers() {
                         alt=""
                       />
                       <div>
-                        <p className="font-bold text-gray-900">{user.name}</p>
+                        <p className="font-bold text-base-content">
+                          {user.name}
+                        </p>
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
                     </div>

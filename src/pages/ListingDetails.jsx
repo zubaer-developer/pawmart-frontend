@@ -54,7 +54,7 @@ function ListingDetails() {
 
   return (
     <div className="container mx-auto px-4 lg:px-8 py-12">
-      <div className="bg-white rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col lg:flex-row">
+      <div className="bg-base-100 rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col lg:flex-row">
         {/* Image */}
         <div className="lg:w-1/2 h-100 lg:h-auto relative group">
           <img
@@ -82,21 +82,21 @@ function ListingDetails() {
             </div>
           </div>
 
-          <div className="prose text-gray-600 mb-8 leading-relaxed">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">About</h3>
+          <div className="prose text-base-content/70 mb-8 leading-relaxed">
+            <h3 className="text-xl font-bold text-base-content mb-3">About</h3>
             <p>{listing.description}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="p-4 bg-gray-50 rounded-2xl">
+            <div className="p-4 bg-base-200 rounded-2xl">
               <p className="text-gray-400 text-xs uppercase font-bold">
                 Posted By
               </p>
-              <p className="font-semibold text-gray-900">{listing.email}</p>
+              <p className="font-semibold text-base-content">{listing.email}</p>
             </div>
-            <div className="p-4 bg-gray-50 rounded-2xl">
+            <div className="p-4 bg-base-200 rounded-2xl">
               <p className="text-gray-400 text-xs uppercase font-bold">Date</p>
-              <p className="font-semibold text-gray-900">{listing.date}</p>
+              <p className="font-semibold text-base-content">{listing.date}</p>
             </div>
           </div>
 
@@ -112,20 +112,20 @@ function ListingDetails() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-md animate-float">
+          <div className="bg-base-100 rounded-3xl p-8 w-full max-w-md animate-float">
             <h2 className="text-2xl font-bold mb-6">Complete Request</h2>
             <form onSubmit={handleOrder} className="space-y-4">
               <input
                 type="text"
                 value={user.displayName}
                 readOnly
-                className="w-full px-4 py-3 bg-gray-100 rounded-xl"
+                className="w-full px-4 py-3 bg-base-300 rounded-xl"
               />
               <input
                 type="email"
                 value={user.email}
                 readOnly
-                className="w-full px-4 py-3 bg-gray-100 rounded-xl"
+                className="w-full px-4 py-3 bg-base-300 rounded-xl"
               />
               <input
                 type="text"
@@ -160,7 +160,7 @@ function ListingDetails() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-3 bg-gray-100 font-bold rounded-xl"
+                  className="flex-1 py-3 bg-base-300 font-bold rounded-xl"
                 >
                   Cancel
                 </button>

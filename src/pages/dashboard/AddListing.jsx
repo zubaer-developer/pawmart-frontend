@@ -57,12 +57,14 @@ function AddListing() {
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Add New Listing</h1>
+        <h1 className="text-2xl font-bold text-base-content">
+          Add New Listing
+        </h1>
         <p className="text-gray-500">Create a new pet or product listing</p>
       </div>
 
       {/* Form Card */}
-      <div className="bg-white rounded-3xl shadow-sm p-8">
+      <div className="bg-base-100 rounded-3xl shadow-sm p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name & Category Row */}
           <div className="grid md:grid-cols-2 gap-6">
@@ -76,7 +78,7 @@ function AddListing() {
                 name="name"
                 required
                 placeholder="Enter name"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
 
@@ -90,7 +92,7 @@ function AddListing() {
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               >
                 <option value="">Select Category</option>
                 <option value="Pets">🐾 Pets (Adoption)</option>
@@ -118,8 +120,8 @@ function AddListing() {
                 placeholder="0 for free adoption"
                 className={`w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-orange-400 transition-all outline-none ${
                   category === "Pets"
-                    ? "bg-gray-100"
-                    : "bg-gray-50 focus:bg-white"
+                    ? "bg-base-300"
+                    : "bg-base-200 focus:bg-base-100"
                 }`}
               />
               {category === "Pets" && (
@@ -139,7 +141,7 @@ function AddListing() {
                 name="location"
                 required
                 placeholder="e.g., Dhaka, Chittagong"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+                className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
               />
             </div>
           </div>
@@ -154,7 +156,7 @@ function AddListing() {
               name="image"
               required
               placeholder="https://example.com/image.jpg"
-              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
             />
             <p className="text-xs text-gray-500 mt-1">
               Use ImgBB, Imgur, or any image hosting service
@@ -170,7 +172,7 @@ function AddListing() {
               type="date"
               name="date"
               required
-              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none"
             />
           </div>
 
@@ -184,7 +186,7 @@ function AddListing() {
               required
               rows="4"
               placeholder="Describe your pet or product in detail..."
-              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none resize-none"
+              className="w-full px-4 py-3 bg-base-200 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-base-100 transition-all outline-none resize-none"
             ></textarea>
           </div>
 
@@ -197,7 +199,7 @@ function AddListing() {
               type="email"
               value={user?.email || ""}
               readOnly
-              className="w-full px-4 py-3 bg-gray-100 border-2 border-gray-100 rounded-xl text-gray-500"
+              className="w-full px-4 py-3 bg-base-300 border-2 border-gray-100 rounded-xl text-gray-500"
             />
           </div>
 

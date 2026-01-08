@@ -37,7 +37,7 @@ function Categories() {
   ];
 
   return (
-    <section className="py-12 bg-white dark:bg-gray-950 transition-colors">
+    <section className="py-12 bg-base-100 dark:bg-gray-950 transition-colors">
       <div className="container mx-auto ">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
@@ -45,7 +45,7 @@ function Categories() {
             <span className="text-orange-500 text-xs font-bold uppercase tracking-widest mb-2 block">
               Quick Browse
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white leading-none">
+            <h2 className="text-2xl md:text-3xl font-black text-base-content dark:text-white leading-none">
               Top Categories
             </h2>
           </div>
@@ -63,7 +63,7 @@ function Categories() {
             <Link
               key={category.name}
               to={category.link}
-              className="group relative flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 hover:shadow-lg active:scale-95"
+              className="group relative flex items-center gap-4 p-4 rounded-2xl bg-base-200 dark:bg-gray-900 border border-transparent hover:border-orange-200 dark:hover:border-orange-900/30 transition-all duration-300 hover:shadow-lg active:scale-95"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               {/* Icon */}
@@ -75,7 +75,7 @@ function Categories() {
 
               {/* Text Info */}
               <div className="min-w-0">
-                <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white truncate">
+                <h3 className="text-sm md:text-base font-bold text-base-content dark:text-white truncate">
                   {category.name}
                 </h3>
                 <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 font-medium">
