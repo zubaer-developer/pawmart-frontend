@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 
-// Swiper styles
+// Swiper style
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
