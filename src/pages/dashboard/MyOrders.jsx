@@ -4,6 +4,7 @@ import autoTable from "jspdf-autotable";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
+import { API_URL } from "../../backendConfig";
 
 function MyOrders() {
   useTitle("My Orders");
@@ -21,9 +22,7 @@ function MyOrders() {
   const fetchMyOrders = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `http://localhost:5000/orders/user/${user.email}`
-      );
+      const response = await fetch(`${API_URL}/orders/user/${user.email}`);
       const data = await response.json();
 
       if (data.success) {

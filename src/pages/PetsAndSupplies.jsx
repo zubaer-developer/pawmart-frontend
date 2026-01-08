@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useTitle from "../hooks/useTitle";
 import Lenis from "lenis";
+import { API_URL } from "../backendConfig";
 
 function PetsAndSupplies() {
   useTitle("Pets & Supplies");
@@ -34,7 +35,7 @@ function PetsAndSupplies() {
 
   // Fetch Data
   useEffect(() => {
-    fetch("http://localhost:5000/listings")
+    fetch(`${API_URL}/listings`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

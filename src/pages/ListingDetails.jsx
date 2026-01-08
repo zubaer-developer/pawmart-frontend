@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useTitle from "../hooks/useTitle";
+import { API_URL } from "../backendConfig";
 
 function ListingDetails() {
   useTitle("Details");
@@ -13,7 +14,7 @@ function ListingDetails() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/listings/${id}`)
+    fetch(`${API_URL}/listings/${id}`)
       .then((res) => res.json())
       .then((data) => data.success && setListing(data.data));
   }, [id]);
@@ -35,7 +36,7 @@ function ListingDetails() {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/orders", {
+      const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),

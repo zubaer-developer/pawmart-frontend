@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
+import { API_URL } from "../../backendConfig";
 
 function UpdateListing() {
   useTitle("Update Listing");
@@ -22,7 +23,7 @@ function UpdateListing() {
   const fetchListing = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/listings/${id}`);
+      const response = await fetch(`${API_URL}/listings/${id}`);
       const data = await response.json();
 
       if (data.success) {
@@ -60,7 +61,7 @@ function UpdateListing() {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/listings/${id}`, {
+      const response = await fetch(`${API_URL}/listings/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),

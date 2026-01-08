@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../backendConfig";
 
 function RecentListings() {
   const [listings, setListings] = useState([]);
@@ -9,18 +10,9 @@ function RecentListings() {
     fetchRecentListings();
   }, []);
 
-  const isLocalhost = Boolean(
-    window.location.hostname === "localhost" ||
-      window.location.hostname === "[::1]"
-  );
-
-  const API_BASE_URL = isLocalhost
-    ? "http://localhost:5000"
-    : "https://pawmart-backend-beta.vercel.app";
-
   const fetchRecentListings = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/listings-recent`);
+      const response = await fetch(`${API_URL}/listings-recent`);
       const data = await response.json();
       if (data.success) {
         setListings(data.data);

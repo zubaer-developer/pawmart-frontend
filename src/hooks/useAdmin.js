@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuth from "./useAuth";
+import { API_URL } from "../backendConfig";
 
 function useAdmin() {
   const { user, loading: authLoading } = useAuth();
@@ -18,9 +19,7 @@ function useAdmin() {
   const checkAdminStatus = async () => {
     try {
       setAdminLoading(true);
-      const response = await fetch(
-        `http://localhost:5000/users/admin/${user.email}`
-      );
+      const response = await fetch(`${API_URL}/users/admin/${user.email}`);
       const data = await response.json();
       setIsAdmin(data.admin);
     } catch (error) {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import useTitle from "../../../hooks/useTitle";
+import { API_URL } from "../../../backendConfig";
 
 function ManageUsers() {
   useTitle("Manage Users");
@@ -13,7 +14,7 @@ function ManageUsers() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/users");
+      const response = await fetch(`${API_URL}/users`);
       const data = await response.json();
       if (data.success) setUsers(data.data);
     } catch (err) {
@@ -26,7 +27,7 @@ function ManageUsers() {
   const handleMakeAdmin = async (id) => {
     if (!window.confirm("Make this user an admin?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/users/admin/${id}`, {
+      const res = await fetch(`${API_URL}/users/admin/${id}`, {
         method: "PUT",
       });
       const data = await res.json();
@@ -42,7 +43,7 @@ function ManageUsers() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this user?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/users/${id}`, {
+      const res = await fetch(`${API_URL}/users/${id}`, {
         method: "DELETE",
       });
       const data = await res.json();

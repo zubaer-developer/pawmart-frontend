@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_URL } from "../../backendConfig";
 
 function Statistics() {
   const [stats, setStats] = useState({
@@ -14,7 +15,7 @@ function Statistics() {
 
   const fetchStats = async () => {
     try {
-      const listingsRes = await fetch("http://localhost:5000/listings");
+      const listingsRes = await fetch(`${API_URL}/listings`);
       const listingsData = await listingsRes.json();
 
       const pets =
@@ -22,10 +23,10 @@ function Statistics() {
       const products =
         listingsData.data?.filter((l) => l.category !== "Pets").length || 0;
 
-      const usersRes = await fetch("http://localhost:5000/users");
+      const usersRes = await fetch(`${API_URL}/users`);
       const usersData = await usersRes.json();
 
-      const ordersRes = await fetch("http://localhost:5000/orders");
+      const ordersRes = await fetch(`${API_URL}/orders`);
       const ordersData = await ordersRes.json();
 
       setStats({

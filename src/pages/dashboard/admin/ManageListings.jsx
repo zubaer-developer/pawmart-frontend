@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../../backendConfig";
 
 function ManageListings() {
   const [listings, setListings] = useState([]);
@@ -13,7 +14,7 @@ function ManageListings() {
   const fetchAllListings = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/listings");
+      const response = await fetch(`${API_URL}/listings`);
       const data = await response.json();
 
       if (data.success) {
@@ -36,7 +37,7 @@ function ManageListings() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/listings/${id}`, {
+      const response = await fetch(`${API_URL}/listings/${id}`, {
         method: "DELETE",
       });
       const data = await response.json();

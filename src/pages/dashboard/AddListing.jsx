@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
+import { API_URL } from "../../backendConfig";
 
 function AddListing() {
   useTitle("Add Listing");
@@ -30,7 +31,7 @@ function AddListing() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/listings", {
+      const response = await fetch(`${API_URL}/listings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(listingData),

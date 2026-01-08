@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useTitle from "../hooks/useTitle";
+import { API_URL } from "../backendConfig";
 
 function Login() {
   useTitle("Login");
@@ -41,7 +42,7 @@ function Login() {
       const result = await googleSignIn();
       const user = result.user;
 
-      await fetch("http://localhost:5000/users", {
+      await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

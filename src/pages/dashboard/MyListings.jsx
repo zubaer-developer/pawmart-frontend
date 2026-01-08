@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
+import { API_URL } from "../../backendConfig";
 
 function MyListings() {
   useTitle("My Listings");
@@ -20,7 +21,7 @@ function MyListings() {
   const fetchMyListings = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/listings");
+      const response = await fetch(`${API_URL}/listings`);
       const data = await response.json();
 
       if (data.success) {
@@ -43,7 +44,7 @@ function MyListings() {
       return;
 
     try {
-      const response = await fetch(`http://localhost:5000/listings/${id}`, {
+      const response = await fetch(`${API_URL}/listings/${id}`, {
         method: "DELETE",
       });
       const data = await response.json();

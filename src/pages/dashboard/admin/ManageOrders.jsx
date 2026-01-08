@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_URL } from "../../../backendConfig";
 
 function ManageOrders() {
   const [orders, setOrders] = useState([]);
@@ -12,7 +13,7 @@ function ManageOrders() {
   const fetchAllOrders = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/orders");
+      const response = await fetch(`${API_URL}/orders`);
       const data = await response.json();
 
       if (data.success) {
@@ -30,7 +31,7 @@ function ManageOrders() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/orders/${id}`, {
+      const response = await fetch(`${API_URL}/orders/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +64,7 @@ function ManageOrders() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/orders/${id}`, {
+      const response = await fetch(`${API_URL}/orders/${id}`, {
         method: "DELETE",
       });
       const data = await response.json();
