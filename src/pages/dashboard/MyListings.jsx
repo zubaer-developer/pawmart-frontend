@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
-import Loading from "../../components/Loading";
 
 function MyListings() {
   useTitle("My Listings");
@@ -33,18 +32,15 @@ function MyListings() {
         toast.error("Failed to fetch listings");
       }
     } catch (err) {
-      toast.error("Error connecting to server");
-      console.log(err);
+      toast.error("Error connecting to server", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this listing?"
-    );
-    if (!confirmDelete) return;
+    if (!window.confirm("Are you sure you want to delete this listing?"))
+      return;
 
     try {
       const response = await fetch(`http://localhost:5000/listings/${id}`, {
@@ -54,90 +50,116 @@ function MyListings() {
 
       if (data.success) {
         setListings(listings.filter((listing) => listing._id !== id));
-        toast.success("Listing deleted successfully!");
+        toast.success("Listing deleted! 🗑️");
       } else {
-        toast.error("Failed to delete listing");
+        toast.error("Failed to delete");
       }
     } catch (err) {
-      toast.error("Error deleting listing");
-      console.log(err);
+      toast.error("Error deleting listing", err);
     }
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h1>My Listings</h1>
-        <Link to="/dashboard/add-listing">
-          <button style={{ padding: "10px 20px" }}>+ Add New</button>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">My Listings</h1>
+          <p className="text-gray-500">Manage your pets and products</p>
+        </div>
+        <Link
+          to="/dashboard/add-listing"
+          className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+        >
+          <span>➕</span> Add New
         </Link>
       </div>
 
-      <p>Total: {listings.length} listings</p>
-
-      {listings.length === 0 ? (
-        <p>You have no listings yet.</p>
+      {/* Loading */}
+      {loading ? (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="bg-white rounded-2xl p-4 animate-pulse">
+              <div className="w-full h-40 bg-gray-200 rounded-xl mb-4"></div>
+              <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+          ))}
+        </div>
+      ) : listings.length === 0 ? (
+        <div className="bg-white rounded-3xl p-12 text-center">
+          <span className="text-6xl mb-4 block">📋</span>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">
+            No Listings Yet
+          </h3>
+          <p className="text-gray-500 mb-6">
+            Start by adding your first pet or product listing
+          </p>
+          <Link
+            to="/dashboard/add-listing"
+            className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-xl"
+          >
+            <span>➕</span> Create Listing
+          </Link>
+        </div>
       ) : (
-        <table
-          border="1"
-          cellPadding="10"
-          style={{ marginTop: "20px", width: "100%" }}
-        >
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listings.map((listing) => (
-              <tr key={listing._id}>
-                <td>
-                  <img
-                    src={listing.image}
-                    alt={listing.name}
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </td>
-                <td>{listing.name}</td>
-                <td>{listing.category}</td>
-                <td>{listing.price === 0 ? "Free" : `৳${listing.price}`}</td>
-                <td>{listing.location}</td>
-                <td>{listing.date}</td>
-                <td>
-                  <Link to={`/dashboard/update-listing/${listing._id}`}>
-                    <button style={{ marginRight: "5px" }}>Edit</button>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {listings.map((listing) => (
+            <div
+              key={listing._id}
+              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
+            >
+              {/* Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={listing.image}
+                  alt={listing.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute top-3 left-3">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-medium rounded-full">
+                    {listing.category}
+                  </span>
+                </div>
+                <div className="absolute top-3 right-3">
+                  <span
+                    className={`px-3 py-1 text-white text-sm font-bold rounded-full ${
+                      listing.price === 0 ? "bg-green-500" : "bg-orange-500"
+                    }`}
+                  >
+                    {listing.price === 0 ? "Free" : `৳${listing.price}`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-5">
+                <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">
+                  {listing.name}
+                </h3>
+                <p className="text-gray-500 text-sm flex items-center gap-2 mb-4">
+                  <span>📍</span> {listing.location}
+                </p>
+
+                {/* Actions */}
+                <div className="flex gap-2">
+                  <Link
+                    to={`/dashboard/update-listing/${listing._id}`}
+                    className="flex-1 py-2 bg-gray-100 text-gray-700 font-medium rounded-xl text-center hover:bg-orange-500 hover:text-white transition-colors"
+                  >
+                    ✏️ Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(listing._id)}
-                    style={{ color: "red" }}
+                    className="flex-1 py-2 bg-gray-100 text-red-500 font-medium rounded-xl hover:bg-red-500 hover:text-white transition-colors"
                   >
-                    Delete
+                    🗑️ Delete
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
