@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import useTitle from "../../../hooks/useTitle";
 
 function ManageUsers() {
+  useTitle("Manage Users");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchUsers();
@@ -11,150 +13,118 @@ function ManageUsers() {
 
   const fetchUsers = async () => {
     try {
-      setLoading(true);
       const response = await fetch("http://localhost:5000/users");
       const data = await response.json();
-
-      if (data.success) {
-        setUsers(data.data);
-      } else {
-        setError("Failed to fetch users");
-      }
+      if (data.success) setUsers(data.data);
     } catch (err) {
-      setError("Error connecting to server");
-      console.log(err);
+      toast.error("Failed to fetch users", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleMakeAdmin = async (id) => {
-    const confirmAction = window.confirm("Make this user an admin?");
-    if (!confirmAction) return;
-
+    if (!window.confirm("Make this user an admin?")) return;
     try {
-      const response = await fetch(`http://localhost:5000/users/admin/${id}`, {
+      const res = await fetch(`http://localhost:5000/users/admin/${id}`, {
         method: "PUT",
       });
-      const data = await response.json();
-
+      const data = await res.json();
       if (data.success) {
-        alert("User is now an admin!");
+        toast.success("User promoted to Admin! 👑");
         fetchUsers();
-      } else {
-        alert("Failed to update user role");
       }
     } catch (err) {
-      alert("Error updating user");
-      console.log(err);
+      toast.error("Error updating user", err);
     }
   };
 
-  const handleDeleteUser = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
-    if (!confirmDelete) return;
-
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this user?")) return;
     try {
-      const response = await fetch(`http://localhost:5000/users/${id}`, {
+      const res = await fetch(`http://localhost:5000/users/${id}`, {
         method: "DELETE",
       });
-      const data = await response.json();
-
+      const data = await res.json();
       if (data.success) {
-        setUsers(users.filter((user) => user._id !== id));
-        alert("User deleted successfully!");
-      } else {
-        alert("Failed to delete user");
+        setUsers(users.filter((u) => u._id !== id));
+        toast.success("User deleted! 🗑️");
       }
     } catch (err) {
-      alert("Error deleting user");
-      console.log(err);
+      toast.error("Error deleting user", err);
     }
   };
-
-  if (loading) {
-    return <p>Loading users...</p>;
-  }
-
-  if (error) {
-    return <p style={{ color: "red" }}>{error}</p>;
-  }
 
   return (
     <div>
-      <h1>Manage Users</h1>
-      <p>Total: {users.length} users</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Manage Users</h1>
 
-      {users.length === 0 ? (
-        <p>No users found</p>
-      ) : (
-        <table
-          border="1"
-          cellPadding="10"
-          style={{ marginTop: "20px", width: "100%" }}
-        >
-          <thead>
-            <tr>
-              <th>Avatar</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>
-                  {user.avatar ? (
-                    <img
-                      src={user.avatar}
-                      alt={user.name}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  ) : (
-                    <span>No Image</span>
-                  )}
-                </td>
-                <td>{user.name || "N/A"}</td>
-                <td>{user.email}</td>
-                <td>
-                  <span
-                    style={{
-                      color: user.role === "admin" ? "green" : "gray",
-                      fontWeight: user.role === "admin" ? "bold" : "normal",
-                    }}
-                  >
-                    {user.role?.toUpperCase() || "USER"}
-                  </span>
-                </td>
-                <td>
-                  {user.role !== "admin" && (
-                    <button
-                      onClick={() => handleMakeAdmin(user._id)}
-                      style={{ marginRight: "10px" }}
-                    >
-                      Make Admin
-                    </button>
-                  )}
-                  <button
-                    onClick={() => handleDeleteUser(user._id)}
-                    style={{ color: "red" }}
-                  >
-                    Delete
-                  </button>
-                </td>
+      <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th className="p-6 font-semibold text-gray-600">User</th>
+                <th className="p-6 font-semibold text-gray-600">Role</th>
+                <th className="p-6 font-semibold text-gray-600">Joined</th>
+                <th className="p-6 font-semibold text-gray-600">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {users.map((user) => (
+                <tr
+                  key={user._id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="p-6">
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={user.avatar || "https://i.pravatar.cc/150?img=1"}
+                        className="w-10 h-10 rounded-full object-cover"
+                        alt=""
+                      />
+                      <div>
+                        <p className="font-bold text-gray-900">{user.name}</p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-6">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-bold ${
+                        user.role === "admin"
+                          ? "bg-orange-100 text-orange-600"
+                          : "bg-blue-100 text-blue-600"
+                      }`}
+                    >
+                      {user.role?.toUpperCase() || "USER"}
+                    </span>
+                  </td>
+                  <td className="p-6 text-gray-500 text-sm">
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="p-6 flex gap-2">
+                    {user.role !== "admin" && (
+                      <button
+                        onClick={() => handleMakeAdmin(user._id)}
+                        className="px-3 py-1.5 bg-green-100 text-green-600 rounded-lg text-sm font-bold hover:bg-green-200"
+                      >
+                        Make Admin
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="px-3 py-1.5 bg-red-100 text-red-600 rounded-lg text-sm font-bold hover:bg-red-200"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
