@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
-import Loading from "../../components/Loading";
 
 function UpdateListing() {
   useTitle("Update Listing");
@@ -38,8 +37,7 @@ function UpdateListing() {
         navigate("/dashboard/my-listings");
       }
     } catch (err) {
-      toast.error("Error fetching listing");
-      console.log(err);
+      toast.error("Error fetching listing", err);
     } finally {
       setLoading(false);
     }
@@ -71,140 +69,182 @@ function UpdateListing() {
       const data = await response.json();
 
       if (data.success) {
-        toast.success("Listing updated successfully!");
+        toast.success("Listing updated! ✅");
         navigate("/dashboard/my-listings");
       } else {
-        toast.error(data.message || "Failed to update listing");
+        toast.error(data.message || "Failed to update");
       }
     } catch (err) {
-      toast.error("Error connecting to server");
-      console.log(err);
+      toast.error("Error connecting to server", err);
     } finally {
       setSubmitting(false);
     }
   };
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-3xl p-8 animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
+          <div className="space-y-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-12 bg-gray-200 rounded-xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  if (!listing) {
-    return null;
-  }
+  if (!listing) return null;
 
   return (
-    <div>
-      <h1>Update Listing</h1>
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "10px" }}>
-          <label>Pet/Product Name: *</label>
-          <br />
-          <input
-            type="text"
-            name="name"
-            required
-            defaultValue={listing.name}
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Category: *</label>
-          <br />
-          <select
-            name="category"
-            required
-            defaultValue={listing.category}
-            style={{ width: "320px", padding: "8px" }}
-          >
-            <option value="Pets">Pets (Adoption)</option>
-            <option value="Food">Pet Food</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Care Products">Care Products</option>
-          </select>
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Price (BDT): *</label>
-          <br />
-          <input
-            type="number"
-            name="price"
-            required
-            min="0"
-            defaultValue={listing.price}
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Location: *</label>
-          <br />
-          <input
-            type="text"
-            name="location"
-            required
-            defaultValue={listing.location}
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Description: *</label>
-          <br />
-          <textarea
-            name="description"
-            required
-            rows="4"
-            defaultValue={listing.description}
-            style={{ width: "300px", padding: "8px" }}
-          ></textarea>
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Image URL: *</label>
-          <br />
-          <input
-            type="url"
-            name="image"
-            required
-            defaultValue={listing.image}
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Available Date: *</label>
-          <br />
-          <input
-            type="date"
-            name="date"
-            required
-            defaultValue={listing.date}
-            style={{ width: "320px", padding: "8px" }}
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{
-            padding: "10px 30px",
-            marginTop: "10px",
-            marginRight: "10px",
-          }}
+    <div className="max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-8">
+        <Link
+          to="/dashboard/my-listings"
+          className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-colors"
         >
-          {submitting ? "Updating..." : "Update Listing"}
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate("/dashboard/my-listings")}
-          style={{ padding: "10px 30px", marginTop: "10px" }}
-        >
-          Cancel
-        </button>
-      </form>
+          ←
+        </Link>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Update Listing</h1>
+          <p className="text-gray-500">Edit your pet or product details</p>
+        </div>
+      </div>
+
+      {/* Form */}
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name & Category */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Name *
+              </label>
+              <input
+                type="text"
+                name="name"
+                required
+                defaultValue={listing.name}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Category *
+              </label>
+              <select
+                name="category"
+                required
+                defaultValue={listing.category}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              >
+                <option value="Pets">🐾 Pets</option>
+                <option value="Food">🍖 Food</option>
+                <option value="Accessories">🎾 Accessories</option>
+                <option value="Care Products">💊 Care Products</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Price & Location */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Price *
+              </label>
+              <input
+                type="number"
+                name="price"
+                required
+                min="0"
+                defaultValue={listing.price}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Location *
+              </label>
+              <input
+                type="text"
+                name="location"
+                required
+                defaultValue={listing.location}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Image & Date */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Image URL *
+              </label>
+              <input
+                type="url"
+                name="image"
+                required
+                defaultValue={listing.image}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Date *
+              </label>
+              <input
+                type="date"
+                name="date"
+                required
+                defaultValue={listing.date}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Description *
+            </label>
+            <textarea
+              name="description"
+              required
+              rows="4"
+              defaultValue={listing.description}
+              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none resize-none"
+            ></textarea>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-4">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex-1 py-4 gradient-primary text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {submitting ? (
+                <>
+                  <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  Updating...
+                </>
+              ) : (
+                <>Update Listing</>
+              )}
+            </button>
+            <Link
+              to="/dashboard/my-listings"
+              className="px-8 py-4 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors"
+            >
+              Cancel
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
