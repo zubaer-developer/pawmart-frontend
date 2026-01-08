@@ -10,6 +10,7 @@ function AddListing() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ function AddListing() {
       const data = await response.json();
 
       if (data.success) {
-        toast.success("Listing created successfully!");
+        toast.success("Listing created successfully! 🎉");
         form.reset();
         navigate("/dashboard/my-listings");
       } else {
@@ -52,138 +53,173 @@ function AddListing() {
     }
   };
 
-  const handleCategoryChange = (e) => {
-    const category = e.target.value;
-    const priceInput = document.querySelector('input[name="price"]');
-
-    if (category === "Pets") {
-      priceInput.value = "0";
-      priceInput.readOnly = true;
-    } else {
-      priceInput.readOnly = false;
-    }
-  };
-
   return (
-    <div>
-      <h1>Add New Listing</h1>
+    <div className="max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Add New Listing</h1>
+        <p className="text-gray-500">Create a new pet or product listing</p>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "10px" }}>
-          <label>Pet/Product Name: *</label>
-          <br />
-          <input
-            type="text"
-            name="name"
-            required
-            placeholder="Enter name"
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
+      {/* Form Card */}
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name & Category Row */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Pet/Product Name *
+              </label>
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="Enter name"
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
 
-        <div style={{ marginBottom: "10px" }}>
-          <label>Category: *</label>
-          <br />
-          <select
-            name="category"
-            required
-            onChange={handleCategoryChange}
-            style={{ width: "320px", padding: "8px" }}
+            {/* Category */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Category *
+              </label>
+              <select
+                name="category"
+                required
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              >
+                <option value="">Select Category</option>
+                <option value="Pets">🐾 Pets (Adoption)</option>
+                <option value="Food">🍖 Pet Food</option>
+                <option value="Accessories">🎾 Accessories</option>
+                <option value="Care Products">💊 Care Products</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Price & Location Row */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Price */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Price (BDT) *
+              </label>
+              <input
+                type="number"
+                name="price"
+                required
+                min="0"
+                defaultValue={category === "Pets" ? "0" : ""}
+                readOnly={category === "Pets"}
+                placeholder="0 for free adoption"
+                className={`w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-orange-400 transition-all outline-none ${
+                  category === "Pets"
+                    ? "bg-gray-100"
+                    : "bg-gray-50 focus:bg-white"
+                }`}
+              />
+              {category === "Pets" && (
+                <p className="text-xs text-green-600 mt-1">
+                  ✓ Pets are free for adoption
+                </p>
+              )}
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Location *
+              </label>
+              <input
+                type="text"
+                name="location"
+                required
+                placeholder="e.g., Dhaka, Chittagong"
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Image URL */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Image URL *
+            </label>
+            <input
+              type="url"
+              name="image"
+              required
+              placeholder="https://example.com/image.jpg"
+              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Use ImgBB, Imgur, or any image hosting service
+            </p>
+          </div>
+
+          {/* Date */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Available Date *
+            </label>
+            <input
+              type="date"
+              name="date"
+              required
+              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Description *
+            </label>
+            <textarea
+              name="description"
+              required
+              rows="4"
+              placeholder="Describe your pet or product in detail..."
+              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-orange-400 focus:bg-white transition-all outline-none resize-none"
+            ></textarea>
+          </div>
+
+          {/* Owner Email */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Your Email
+            </label>
+            <input
+              type="email"
+              value={user?.email || ""}
+              readOnly
+              className="w-full px-4 py-3 bg-gray-100 border-2 border-gray-100 rounded-xl text-gray-500"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 gradient-primary text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 flex items-center justify-center gap-2 cursor-pointer"
           >
-            <option value="">Select Category</option>
-            <option value="Pets">Pets (Adoption)</option>
-            <option value="Food">Pet Food</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Care Products">Care Products</option>
-          </select>
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Price (BDT): *</label>
-          <br />
-          <input
-            type="number"
-            name="price"
-            required
-            min="0"
-            defaultValue="0"
-            style={{ width: "300px", padding: "8px" }}
-          />
-          <small style={{ display: "block", color: "#666" }}>
-            Set 0 for free pet adoption
-          </small>
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Location: *</label>
-          <br />
-          <input
-            type="text"
-            name="location"
-            required
-            placeholder="e.g., Dhaka"
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Description: *</label>
-          <br />
-          <textarea
-            name="description"
-            required
-            rows="4"
-            placeholder="Describe your pet or product..."
-            style={{ width: "300px", padding: "8px" }}
-          ></textarea>
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Image URL: *</label>
-          <br />
-          <input
-            type="url"
-            name="image"
-            required
-            placeholder="https://example.com/image.jpg"
-            style={{ width: "300px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Available Date: *</label>
-          <br />
-          <input
-            type="date"
-            name="date"
-            required
-            style={{ width: "320px", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px" }}>
-          <label>Your Email:</label>
-          <br />
-          <input
-            type="email"
-            value={user?.email || ""}
-            readOnly
-            style={{
-              width: "300px",
-              padding: "8px",
-              backgroundColor: "#f0f0f0",
-            }}
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          style={{ padding: "10px 30px", marginTop: "10px" }}
-        >
-          {loading ? "Creating..." : "Create Listing"}
-        </button>
-      </form>
+            {loading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                Creating...
+              </>
+            ) : (
+              <>
+                <span>➕</span> Create Listing
+              </>
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
