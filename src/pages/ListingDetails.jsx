@@ -1,338 +1,178 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useTitle from "../hooks/useTitle";
-import Loading from "../components/Loading";
 
 function ListingDetails() {
-  useTitle("Listing Details");
-
+  useTitle("Details");
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-
   const [listing, setListing] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [showOrderForm, setShowOrderForm] = useState(false);
-  const [orderLoading, setOrderLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetchListing();
+    fetch(`http://localhost:5000/listings/${id}`)
+      .then((res) => res.json())
+      .then((data) => data.success && setListing(data.data));
   }, [id]);
 
-  const fetchListing = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`http://localhost:5000/listings/${id}`);
-      const data = await response.json();
-
-      if (data.success) {
-        setListing(data.data);
-      } else {
-        toast.error("Listing not found");
-      }
-    } catch (err) {
-      toast.error("Error connecting to server");
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOrderClick = () => {
-    if (!user) {
-      toast.error("Please login to order");
-      navigate("/login", { state: { from: { pathname: `/listing/${id}` } } });
-      return;
-    }
-    setShowOrderForm(true);
-  };
-
-  const handleOrderSubmit = async (e) => {
+  const handleOrder = async (e) => {
     e.preventDefault();
-    setOrderLoading(true);
-
     const form = e.target;
-
     const orderData = {
       productId: listing._id,
       productName: listing.name,
       category: listing.category,
-      buyerName: user.displayName || form.buyerName.value,
+      buyerName: user.displayName,
       email: user.email,
-      quantity: listing.category === "Pets" ? 1 : parseInt(form.quantity.value),
+      quantity: listing.category === "Pets" ? 1 : parseInt(form.qty.value),
       price: listing.price,
       address: form.address.value,
       phone: form.phone.value,
       date: form.date.value,
-      additionalNotes: form.notes.value,
     };
 
     try {
-      const response = await fetch("http://localhost:5000/orders", {
+      const res = await fetch("http://localhost:5000/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
       });
-
-      const data = await response.json();
-
+      const data = await res.json();
       if (data.success) {
-        toast.success("Order placed successfully!");
-        form.reset();
-        setShowOrderForm(false);
+        toast.success("Order Placed! 🎉");
         navigate("/dashboard/my-orders");
-      } else {
-        toast.error(data.message || "Failed to place order");
       }
     } catch (err) {
-      toast.error("Error connecting to server");
-      console.log(err);
-    } finally {
-      setOrderLoading(false);
+      toast.error("Failed to order", err);
     }
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!listing) {
-    return (
-      <div style={{ padding: "40px", textAlign: "center" }}>
-        <p>Listing not found</p>
-        <Link to="/pets-and-supplies">Back to Listings</Link>
-      </div>
-    );
-  }
+  if (!listing) return <div className="text-center py-20">Loading...</div>;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Link to="/pets-and-supplies">← Back to Listings</Link>
-
-      <div
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          gap: "40px",
-          flexWrap: "wrap",
-        }}
-      >
+    <div className="container mx-auto px-4 lg:px-8 py-12">
+      <div className="bg-white rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col lg:flex-row">
         {/* Image */}
-        <div style={{ flex: "1", minWidth: "300px" }}>
+        <div className="lg:w-1/2 h-100 lg:h-auto relative group">
           <img
             src={listing.image}
-            alt={listing.name}
-            style={{ width: "100%", maxWidth: "500px", borderRadius: "5px" }}
+            className="w-full h-full object-cover"
+            alt=""
           />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+          <div className="absolute bottom-8 left-8 text-white">
+            <span className="bg-orange-500 px-4 py-1 rounded-full text-sm font-bold mb-3 inline-block">
+              {listing.category}
+            </span>
+            <h1 className="text-4xl font-bold">{listing.name}</h1>
+          </div>
         </div>
 
         {/* Details */}
-        <div style={{ flex: "1", minWidth: "300px" }}>
-          <h1>{listing.name}</h1>
+        <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-orange-500">
+              {listing.price === 0 ? "Free Adoption" : `৳${listing.price}`}
+            </h2>
+            <div className="text-gray-500 flex items-center gap-2">
+              <span>📍</span> {listing.location}
+            </div>
+          </div>
 
-          <p
-            style={{
-              display: "inline-block",
-              backgroundColor: "#eee",
-              padding: "5px 15px",
-              borderRadius: "20px",
-            }}
+          <div className="prose text-gray-600 mb-8 leading-relaxed">
+            <h3 className="text-xl font-bold text-gray-900 mb-3">About</h3>
+            <p>{listing.description}</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="p-4 bg-gray-50 rounded-2xl">
+              <p className="text-gray-400 text-xs uppercase font-bold">
+                Posted By
+              </p>
+              <p className="font-semibold text-gray-900">{listing.email}</p>
+            </div>
+            <div className="p-4 bg-gray-50 rounded-2xl">
+              <p className="text-gray-400 text-xs uppercase font-bold">Date</p>
+              <p className="font-semibold text-gray-900">{listing.date}</p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => (user ? setShowModal(true) : navigate("/login"))}
+            className="w-full py-4 gradient-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer"
           >
-            {listing.category}
-          </p>
-
-          <h2
-            style={{
-              marginTop: "20px",
-              color: listing.price === 0 ? "green" : "inherit",
-            }}
-          >
-            {listing.price === 0 ? "Free (Adoption)" : `৳${listing.price}`}
-          </h2>
-
-          <table style={{ marginTop: "20px" }}>
-            <tbody>
-              <tr>
-                <td style={{ padding: "5px 20px 5px 0" }}>
-                  <strong>Location:</strong>
-                </td>
-                <td>📍 {listing.location}</td>
-              </tr>
-              <tr>
-                <td style={{ padding: "5px 20px 5px 0" }}>
-                  <strong>Available:</strong>
-                </td>
-                <td>📅 {listing.date}</td>
-              </tr>
-              <tr>
-                <td style={{ padding: "5px 20px 5px 0" }}>
-                  <strong>Owner:</strong>
-                </td>
-                <td>📧 {listing.email}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h3 style={{ marginTop: "20px" }}>Description</h3>
-          <p>{listing.description}</p>
-
-          {/* Order Button */}
-          {!showOrderForm && (
-            <button
-              onClick={handleOrderClick}
-              style={{
-                padding: "15px 40px",
-                marginTop: "20px",
-                fontSize: "16px",
-                backgroundColor: "#333",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              {listing.category === "Pets" ? "🐾 Adopt Now" : "🛒 Order Now"}
-            </button>
-          )}
+            {listing.category === "Pets" ? "🐾 Adopt Now" : "🛒 Order Now"}
+          </button>
         </div>
       </div>
 
-      {/* Order Form */}
-      {showOrderForm && (
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "30px",
-            marginTop: "30px",
-            maxWidth: "500px",
-          }}
-        >
-          <h2>
-            {listing.category === "Pets" ? "Adoption Form" : "Order Form"}
-          </h2>
-
-          <form onSubmit={handleOrderSubmit}>
-            <div style={{ marginBottom: "15px" }}>
-              <label>Your Name: *</label>
-              <br />
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-md animate-float">
+            <h2 className="text-2xl font-bold mb-6">Complete Request</h2>
+            <form onSubmit={handleOrder} className="space-y-4">
               <input
                 type="text"
-                name="buyerName"
-                defaultValue={user?.displayName || ""}
-                required
-                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+                value={user.displayName}
+                readOnly
+                className="w-full px-4 py-3 bg-gray-100 rounded-xl"
               />
-            </div>
-
-            <div style={{ marginBottom: "15px" }}>
-              <label>Your Email:</label>
-              <br />
               <input
                 type="email"
-                value={user?.email || ""}
+                value={user.email}
                 readOnly
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "5px",
-                  backgroundColor: "#f0f0f0",
-                }}
+                className="w-full px-4 py-3 bg-gray-100 rounded-xl"
               />
-            </div>
-
-            <div style={{ marginBottom: "15px" }}>
-              <label>Product:</label>
-              <br />
               <input
                 type="text"
-                value={listing.name}
-                readOnly
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "5px",
-                  backgroundColor: "#f0f0f0",
-                }}
-              />
-            </div>
-
-            {listing.category !== "Pets" && (
-              <div style={{ marginBottom: "15px" }}>
-                <label>Quantity: *</label>
-                <br />
-                <input
-                  type="number"
-                  name="quantity"
-                  min="1"
-                  defaultValue="1"
-                  required
-                  style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-                />
-              </div>
-            )}
-
-            <div style={{ marginBottom: "15px" }}>
-              <label>Delivery Address: *</label>
-              <br />
-              <textarea
                 name="address"
+                placeholder="Delivery Address"
                 required
-                rows="3"
-                placeholder="Enter your full address"
-                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-              ></textarea>
-            </div>
-
-            <div style={{ marginBottom: "15px" }}>
-              <label>Phone Number: *</label>
-              <br />
+                className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-orange-400 outline-none"
+              />
               <input
                 type="tel"
                 name="phone"
+                placeholder="Phone Number"
                 required
-                placeholder="01XXXXXXXXX"
-                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+                className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-orange-400 outline-none"
               />
-            </div>
-
-            <div style={{ marginBottom: "15px" }}>
-              <label>Preferred Date: *</label>
-              <br />
               <input
                 type="date"
                 name="date"
                 required
-                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
+                className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-orange-400 outline-none"
               />
-            </div>
-
-            <div style={{ marginBottom: "15px" }}>
-              <label>Additional Notes:</label>
-              <br />
-              <textarea
-                name="notes"
-                rows="2"
-                placeholder="Any special instructions..."
-                style={{ width: "100%", padding: "10px", marginTop: "5px" }}
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              disabled={orderLoading}
-              style={{ padding: "10px 30px", marginRight: "10px" }}
-            >
-              {orderLoading ? "Placing Order..." : "Confirm Order"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowOrderForm(false)}
-              style={{ padding: "10px 30px" }}
-            >
-              Cancel
-            </button>
-          </form>
+              {listing.category !== "Pets" && (
+                <input
+                  type="number"
+                  name="qty"
+                  defaultValue="1"
+                  min="1"
+                  className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl"
+                />
+              )}
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="flex-1 py-3 bg-gray-100 font-bold rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 gradient-primary text-white font-bold rounded-xl cursor-pointer"
+                >
+                  Confirm
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
